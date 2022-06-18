@@ -1,0 +1,52 @@
+<div class="dashboard-container">
+  <div class="dashboard-top">
+    <div class="dashboard-top-left">
+      <button (click)="onOpenAddEmployeeDialog()">
+        <fa-icon [icon]="faPlus"></fa-icon>
+        CREATE USER
+      </button>
+    </div>
+
+    <div class="dashboard-top-right">
+      <div class="dashboard-sort">
+        <span class="dashboard-sort-label">Sort by</span>
+
+        <select class="dashboard-sort-select">
+          <option *ngFor="let option of sortOptions">{{option.name}}</option>
+        </select>
+
+        <span>
+
+          <button (click)="onClickOrder()">
+            <i class="material-icons">{{getOrderIcon()}}</i>
+          </button>
+        </span>
+      </div>
+
+      <div class="dashboard-search">
+        <div class="vr"></div>
+
+        <div class="input-container">
+          <i class="material-icons">search</i>
+          <input class="input-content" type="text" placeholder="Search"/>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="dashboard-content">
+    <app-users-list></app-users-list>
+  </div>
+
+
+
+
+
+
+
+</div>
+

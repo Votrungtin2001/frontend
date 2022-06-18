@@ -1,0 +1,10 @@
+<svg id="logo" xmlns="http://www.w3.org/2000/svg" width="120" height="32" viewBox="0 0 100 32">
+  <g id="Group_1655" data-name="Group 1655">
+    <rect id="Rectangle_5389" data-name="Rectangle 5389" width="32" height="32" fill="#00458f"/>
+    <text id="C" transform="translate(19 22)" fill="#fbfbfb" font-size="18" font-family="OCRAExtended, OCR A"><tspan x="0" y="0">C</tspan></text>
+    <text id="C-2" data-name="C" transform="translate(13 10) rotate(180)" fill="#fbfbfb" font-size="18" font-family="OCRAExtended, OCR A"><tspan x="0" y="0">C</tspan></text>
+    <text id="C-3" data-name="C" transform="translate(22 13) rotate(-90)" fill="#fbfbfb" font-size="18" font-family="OCRAExtended, OCR A"><tspan x="0" y="0">C</tspan></text>
+    <text id="C-4" data-name="C" transform="translate(10 19) rotate(90)" fill="#fbfbfb" font-size="18" font-family="OCRAExtended, OCR A"><tspan x="0" y="0">C</tspan></text>
+  </g>
+  <text id="colla.ai" transform="translate(36 21)" fill="#00458f" font-size="16" font-family="DINNextW1G-Bold, DIN Next W1G" font-weight="700"><tspan x="0" y="0">COLLA</tspan><tspan y="0" font-family="DINNextW1G-Regular, DIN Next W1G" font-weight="400">.ai</tspan></text>
+</svg>

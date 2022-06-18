@@ -1,0 +1,49 @@
+.users-list-container {
+  width: auto;
+  height: fit-content;
+
+  .title {
+    height: 24px;
+    display: flex;
+    margin-left: 24px;
+
+    button {
+      width: 24px;
+      height: 24px;
+      border: none;
+    }
+
+    .material-icons {
+      font-size: 20px;
+      color: #374761;
+    }
+
+    &-name {
+      margin-left: 8px;
+      text-align: left;
+      font: normal normal normal 20px/24px Roboto;
+      letter-spacing: 0px;
+      color: #374761;
+      opacity: 1;
+    }
+
+    hr {
+      height: 0.01em;
+      margin: 12px 24px 12px 8px;
+      background-color: #707070;
+      opacity: 1;
+      flex-grow: 1;
+
+    }
+
+  }
+
+  .users-list {
+    margin-top: 16px;
+    margin-bottom: 32px;
+    margin-left: 32px;
+    display: flex;
+
+  }
+
+}

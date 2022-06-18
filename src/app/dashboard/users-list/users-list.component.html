@@ -1,0 +1,22 @@
+<div class="users-list-container">
+  <ng-container *ngFor="let title of titles">
+    <div class="title">
+      <button (click)="onClickExpand(title.id)">
+        <i class="material-icons">{{isCollapseOrExpand(title.id)}}</i>
+      </button>
+
+      <span class="title-name">{{title.name}}</span>
+
+      <hr>
+
+    </div>
+
+    <div *ngIf="title.expand" class="users-list">
+      <app-user-card></app-user-card>
+
+    </div>
+
+
+  </ng-container>
+
+</div>

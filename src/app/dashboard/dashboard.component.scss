@@ -1,0 +1,147 @@
+.dashboard {
+  &-container {
+    /* Layout Properties */
+    max-width: 1920px;
+    width: 100%;
+    max-height: 744px;
+    height: 90%;
+    /* UI Properties */
+    background: #EEEEEE 0% 0% no-repeat padding-box;
+    opacity: 1;
+  }
+
+  &-top {
+    display: flex;
+    justify-content: space-between;
+    height: 92px;
+
+  }
+
+  &-top-left {
+    button {
+      margin-top: 32px;
+      margin-left: 32px;
+      height: 36px;
+      width: 148px;
+      background: #00458F 0% 0% no-repeat padding-box;
+      border-radius: 4px;
+      opacity: 1;
+      border: none;
+      position: relative;
+      font: normal normal medium 14px/19px Roboto;
+      letter-spacing: 0px;
+      color: #FFFFFF;
+     }
+
+     button:hover {
+      background: #3783d3 0% 0% no-repeat padding-box;
+     }
+
+     button fa-icon {
+      margin-right: 8px;
+     }
+  }
+
+  &-top-right {
+    display: flex;
+    margin-right: 24px;
+  }
+
+  &-sort {
+    margin: 32px 0px;
+
+    &-label {
+      margin-top: 9px;
+      margin-bottom: 8px;
+      margin-right: 5px;
+      text-align: left;
+      font: normal normal normal 16px/19px Roboto;
+      letter-spacing: 0px;
+      color: #707070;
+    }
+
+    &-select {
+      width: 132px;
+      height: 36px;
+      font: normal normal normal 14px/17px Roboto;
+      color: #374761;
+      padding: 3px 3px .3px 12px;
+      background-position: right 1rem center;
+      border-radius: 6px;
+      border-color: #4a4c4e;
+      opacity: 1;
+    }
+
+    button {
+      margin: 7px 16px 5px 8px;
+      width: 24px;
+      height: 24px;
+      position: relative;
+      border: none;
+    }
+
+    .material-icons {
+      font-size: 15px
+    }
+
+  }
+
+  &-search {
+    margin-top: 32px;
+    display: flex;
+
+    .vr {
+      margin: 6px 16px 6px 0px;
+      width: 1px;
+      height: 24px;
+      background-color: #707070;
+      opacity: 1;
+    }
+
+    .input-container {
+      width: 292px;
+      height: 36px;
+      background: hsla(0, 0%, 100%, 1) 0% 0% no-repeat padding-box;
+      border: 0.5px solid hsla(0, 0%, 47%, 1);
+      border-radius: 4px;
+      opacity: 1;
+      display: flex;
+    }
+
+    .input-content {
+      margin-left: 8px;
+      width: 75%;
+      border: none;
+      text-align: left;
+      font: normal normal normal 16px/19px Roboto;
+      letter-spacing: 0px;
+      color: #777777;
+    }
+
+    .input-content:focus{
+      outline: none; // Add this line
+    }
+
+    .material-icons {
+      margin: 6px 0px 6px 12px;
+      font-size: 24px;
+      color: #777777;
+    }
+  }
+
+  &-content {
+    width: auto;
+  }
+
+
+
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+@import '../../../styles.scss';
+
+
+.navbar {
+
+  &-container {
+    display: flex;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    max-width: 1920px;
+    max-height: 56px;
+    height: auto;
+    /* UI Properties */
+    background: rgba(255, 255, 255, 0.4);
+    justify-content: space-between;
+  }
+
+  &-logo {
+    /* Layout Properties */
+    top: 12px;
+    left: 24px;
+    max-width: 120px;
+    max-height: 32px;
+    height: auto;
+    /* UI Properties */
+    opacity: 1;
+    position: relative;
+  }
+
+  &-nav {
+    margin-right: 24px;
+
+  }
+}
+
+ul li {
+
+  list-style: none;
+  display: inline-flex;
+  padding: 0px 5px;
+
+}
+
+button {
+  border: none;
+  background-color: transparent;
+}
+
+button:hover {
+  background-color: rgb(228, 228, 228)  
+}
+
+.material-icons {
+  color: #00458F;
+}

@@ -1,0 +1,22 @@
+
+
+.user-card {
+  background-color: #fff;
+  width: 450px;
+  height: 128px;
+  display: flex;
+  margin-right: 24px;
+
+  .img {
+    width: 128px;
+    height: 128px;
+  }
+}
+
+.user-details {
+  margin: 16px 6px;
+  text-align: left;
+  font: normal normal normal 12px/18px Roboto;
+  letter-spacing: 0px;
+  color: #3D3D3D;
+}
