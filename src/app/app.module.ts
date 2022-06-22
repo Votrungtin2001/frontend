@@ -5,9 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon'
-import { CommonModule } from '@angular/common';
 import { HeaderModule } from './shared/header/header.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
+import { UniqueEmailValidatorDirective } from './shared/unique-email-validator.directive';
 
 
 const Ux_Modules = [
@@ -18,6 +23,7 @@ const Ux_Modules = [
 @NgModule({
   declarations: [
     AppComponent,
+    UniqueEmailValidatorDirective,
   ],
   imports: [
     BrowserModule,
@@ -25,8 +31,17 @@ const Ux_Modules = [
     Ux_Modules,
     HeaderModule,
     DashboardModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    StoreModule.forRoot({}),
+    StoreDevtoolsModule.instrument({
+      logOnly: environment.production,
+    }),
+  ],
+  exports: [
+    UniqueEmailValidatorDirective,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

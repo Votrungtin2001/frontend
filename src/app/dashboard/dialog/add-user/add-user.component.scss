@@ -1,5 +1,287 @@
 .dialog {
   &-container {
-    top: 10px;
+    width: 400px;
+    height: 515px;
+  }
+
+  &-header {
+    height: auto;
+    width: 400px;
+    display: flex;
+
+    .title {
+      margin-top: 5px;
+      text-align: center;
+      font: normal normal normal 20px/24px Roboto;
+      letter-spacing: 0px;
+      color: #3D3D3D;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .add {
+      width: 500px;
+    }
+
+    .update {
+      width: 500px;
+      display: flex;
+      flex-direction: row;            /* default value; can be omitted */
+      flex-wrap: nowrap;              /* default value; can be omitted */
+      justify-content: space-between;
+
+      button {
+        text-align: center;
+        font: normal normal bold 14px/19px Roboto;
+        letter-spacing: 1.25px;
+        color: #FB4646;
+        opacity: 1;
+      }
+
+      button:hover {
+        color: #fb464686;
+      }
+
+      button {
+        border: none;
+        background-color: transparent;
+      }
+
+      .edit-button {
+        font: normal normal bold 14px/19px Roboto;
+        letter-spacing: 1.25px;
+        color: #FB4646;
+        opacity: 1;
+        border: none;
+        background-color: transparent;
+
+        .material-icons {
+          font-size: 24px;
+          color:#3D3D3D;
+        }
+
+        .material-icons:hover {
+          color:#bebebe;
+        }
+      }
+
+      .edit-button:hover {
+        border: none;
+        background-color: transparent;
+      }
+
+
+    }
+
+
+
+
+  }
+
+  &-content {
+    margin: 18px 0px 0px 0px;
+
+    .avatar {
+      display: flex;
+      justify-content: center;
+
+      .avatar{
+        width: 80px;
+        height: 80px;
+        background-color: #858585;
+        border: none;
+
+        .material-icons {
+          font-size: 48px;
+          color: #F5F5F5;
+          margin: 16px 16px;
+        }
+
+        img {
+          width: 80px;
+          height: 80px;
+        }
+
+
+
+        label:hover .material-icons::before {
+          content:"add";
+        }
+
+        .material-icons::before {
+          content:"person_outline";
+        }
+      }
+
+
+
+    }
+
+    .input-content-first {
+      margin-top: 20px;
+      width: 385px;
+      height: 25px;
+      background: #FFFFFF00 0% 0% no-repeat padding-box;
+      border: 1px solid #858585;
+      border-radius: 6px;
+      opacity: 1;
+      font: normal normal normal 13px/16px Roboto;
+      letter-spacing: 0px;
+      color: #858585;
+      padding-left: 12px;
+    }
+
+    .input-content {
+      margin-top: 10px;
+      width: 385px;
+      height: 25px;
+      background: #FFFFFF00 0% 0% no-repeat padding-box;
+      border: 1px solid #858585;
+      border-radius: 6px;
+      opacity: 1;
+      font: normal normal normal 13px/16px Roboto;
+      letter-spacing: 0px;
+      color: #858585;
+      padding-left: 12px;
+    }
+
+    .title-dropdown-list {
+      margin-bottom: 21px;
+      width: 400px;
+      height: 30px;
+      background: #FFFFFF00 0% 0% no-repeat padding-box;
+      border: 1px solid #858585;
+      border-radius: 6px;
+      opacity: 1;
+      font: normal normal normal 13px/16px Roboto;
+      letter-spacing: 0px;
+      color: #858585;
+      padding-left: 12px;
+    }
+
+    .dob-sex-container {
+      display: flex;
+      justify-content: space-between;
+
+      .dob-container {
+
+        .input-date-content {
+          margin-top: 10px;
+          width: 215px;
+          height: 25px;
+          background: #FFFFFF00 0% 0% no-repeat padding-box;
+          border: 1px solid #858585;
+          border-radius: 6px;
+          font: normal normal normal 13px/16px Roboto;
+          letter-spacing: 0px;
+          color: #777777;
+          padding-left: 12px;
+          padding-right: 10px;
+        }
+
+        .input-error {
+          border: red 0.01em solid;
+          margin-bottom: 0px;
+        }
+
+
+      }
+
+      .sex-container {
+        display: flex;
+
+        input[type=checkbox] {
+          width: 16px;
+          height: 16px;
+          margin-top: 17px;
+          margin-left: 16px;
+          accent-color: #374761;
+          color: #374761;
+        }
+
+        span {
+          margin-top: 17px;
+          margin-left: 8px;
+          text-align: left;
+          font: normal normal normal 13px/16px Roboto;
+          letter-spacing: 0px;
+          color: #858585;
+        }
+
+      }
+
+
+
+      ::-webkit-calendar-picker-indicator {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 24 24"><path fill="%23bbbbbb" d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>');
+      }
+    }
+
+
+    .errors {
+      margin-left: 10px;
+      text-align: left;
+      font: normal normal 300 12px/16px Roboto;
+      letter-spacing: 0px;
+      color: #E64121;
+      opacity: 1;
+
+    }
+
+    .input-error {
+      border: red 0.01em solid;
+      margin-bottom: 0px;
+    }
+
+  }
+
+  &-footer {
+    margin-top: 24px;
+    display: flex;
+
+    .discard-button {
+      padding: 5px;
+      margin-top: 3px;
+      margin-left: auto;
+      margin-right: 10px;
+      height: 19px;
+      text-align: center;
+      font: normal normal bold 14px/16px Roboto;
+      letter-spacing: 1.25px;
+      color: #374761;
+      opacity: 1;
+      border: none;
+      background-color: transparent;
+    }
+
+    .discard-button:hover {
+      color: #9f0120;
+      border: none;
+      background-color: transparent;
+    }
+
+    button {
+      width: fit-content;
+      padding: 5px 20px;
+      height: 32px;
+      background: #00458F 0% 0% no-repeat padding-box;
+      border-radius: 4px;
+      opacity: 1;
+      text-align: center;
+      font: normal normal bold 12px/15px Roboto;
+      letter-spacing: 0px;
+      color: #FFFFFF;
+      border: none;
+      opacity: 1;
+    }
+
+    button:hover {
+      background: #3783d3 0% 0% no-repeat padding-box;
+    }
+
+
   }
 }
+
+
+

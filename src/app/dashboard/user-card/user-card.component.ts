@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { User } from 'src/app/model/user.model';
+import { AddUserComponent } from '../dialog/add-user/add-user.component';
 
 @Component({
   selector: 'app-user-card',
@@ -7,9 +10,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserCardComponent implements OnInit {
 
-  constructor() { }
+  @Input() user: User;
+  constructor(
+    private dialog: MatDialog,
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  onOpenUpdateEmployeeDialog() {
+    this.dialog.open(AddUserComponent, {
+      autoFocus: false,
+      data: {user: this.user},
+    });
   }
 
 }

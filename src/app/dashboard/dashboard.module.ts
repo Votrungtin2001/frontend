@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {MatFormFieldModule} from '@angular/material/form-field'
@@ -11,6 +11,14 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { UsersListComponent } from './users-list/users-list.component';
 import { UserCardComponent } from './user-card/user-card.component';
 import { AddUserComponent } from './dialog/add-user/add-user.component';
+import { ReactiveFormsModule,FormsModule } from "@angular/forms";
+import { StoreModule } from '@ngrx/store';
+import { TITLE_STATE_NAME } from '../state/titles/titles.selectors';
+import { titlesReducer } from '../state/titles/titles.reducer';
+import { USERS_STATE_NAME } from '../state/users/users.selectors';
+import { usersReducer } from '../state/users/users.reducer';
+import { UniqueEmailValidatorDirective } from '../shared/unique-email-validator.directive';
+import { DeleteUserComponent } from './dialog/delete-user/delete-user.component';
 
 
 
@@ -20,6 +28,7 @@ import { AddUserComponent } from './dialog/add-user/add-user.component';
     UsersListComponent,
     UserCardComponent,
     AddUserComponent,
+    DeleteUserComponent,
   ],
   imports: [
     CommonModule,
@@ -29,11 +38,19 @@ import { AddUserComponent } from './dialog/add-user/add-user.component';
     MatSelectModule,
     MatInputModule,
     BrowserAnimationsModule,
-    MatDialogModule
+    MatDialogModule,
+    ReactiveFormsModule,
+    FormsModule,
+    StoreModule.forFeature(TITLE_STATE_NAME, titlesReducer),
+    StoreModule.forFeature(USERS_STATE_NAME, usersReducer),
   ],
   exports: [
     DashboardComponent,
   ],
-  entryComponents: [AddUserComponent]
+  providers: [
+    DatePipe,
+    UniqueEmailValidatorDirective
+  ],
+  entryComponents: [AddUserComponent, DeleteUserComponent]
 })
 export class DashboardModule { }

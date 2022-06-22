@@ -1,0 +1,27 @@
+<div class="dialog-container">
+  <div class="announcement">
+    Are you sure you want to DELETE user_email? <br>
+    Please input the user email as confirmation.
+  </div>
+
+  <div>
+    <input
+      class="input-content"
+      id="confirmEmail"
+      type="text"
+      placeholder="Email"
+      [ngClass]="{'input-error': isEmailRequired || isMatchEmail || isWrongEmailFormat}"/>
+
+    <div style="height: 16px;" class="errors">{{showEmailErrors()}}</div>
+  </div>
+
+
+
+  <div class="dialog-footer">
+    <button class="cancel-button" type="button" (click)="onCloseDialog()" >CANCEL</button>
+
+    <button class="delete-button" type="submit" (click)="onDelete()" >DELETE</button>
+
+</div>
+
+</div>

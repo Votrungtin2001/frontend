@@ -24,9 +24,10 @@
         tablet: 16px,
         phone: 16px
     ),
-);  
+);
 
 @use "@material/layout-grid/mdc-layout-grid";
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; };
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: #EEEEEE 0% 0% no-repeat padding-box; };
+

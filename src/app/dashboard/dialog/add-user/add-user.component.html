@@ -1,5 +1,185 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <div class="dialog-container">
-  <div>
-    test
-  </div>
+  <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+    <div class="dialog-header">
+      <div class="update" *ngIf="user">
+        <button type="button" (click)="onDelete(user.id, user.email)">DELETE</button>
+
+        <div class="title">{{getTitleDialog()}}</div>
+
+        <button type="button" class="edit-button">
+          <i class="material-icons">create</i>
+        </button>
+      </div>
+
+      <div class="add" *ngIf="!user">
+
+        <div class="title">{{getTitleDialog()}}</div>
+
+      </div>
+
+    </div>
+
+    <div class="dialog-content">
+      <div class="avatar">
+        <div *ngIf="!user" class="avatar">
+          <label for="image">
+            <i *ngIf="!image" class="material-icons"></i>
+            <img *ngIf="image" [src]="imageUrl">
+          </label>
+          <input
+            style="display: none;"
+            id="image"
+            formControlName="image"
+            type="file"
+            (change)="selectImage($event)"
+            name="image"
+            />
+
+        </div>
+
+        <div *ngIf="user" class="avatar">
+          <label for="image">
+            <img *ngIf="!image" [src]="user.image">
+            <img *ngIf="image" [src]="imageUrl">
+          </label>
+          <input
+            style="display: none;"
+            id="image"
+            type="file"
+            (change)="selectImage($event)"
+            name="image"
+            />
+
+        </div>
+
+
+      </div>
+
+      <div>
+
+        <input
+          class="input-content-first"
+          type="text"
+          id="firstName"
+          placeholder="First Name"
+          formControlName="firstName"
+          [ngClass]="{'input-error': addForm.get('firstName').touched && !addForm.get('firstName').valid
+          || (!addForm.get('firstName').touched && isFirstNameError)}"/>
+
+          <div *ngIf="!isFirstNameError" style="height: 16px;" class="errors">{{showFirstNameErrors()}}</div>
+          <div *ngIf="isFirstNameError" style="height: 16px;" class="errors">{{firstNameError}}</div>
+      </div>
+
+      <div>
+        <input
+          class="input-content"
+          type="text"
+          id="lastName"
+          placeholder="Last Name"
+          formControlName="lastName"
+          [ngClass]="{'input-error': addForm.get('lastName').touched && !addForm.get('lastName').valid
+          || (!addForm.get('lastName').touched && isLastNameError) }"/>
+          <div *ngIf="!isLastNameError" style="height: 16px;" class="errors">{{showLastNameErrors()}}</div>
+          <div *ngIf="isLastNameError" style="height: 16px;" class="errors">{{lastNameError}}</div>
+      </div>
+
+      <div class="dob-sex-container">
+        <div class="dob-container">
+          <input
+            class="input-date-content"
+            type="text"
+            id="dob"
+            placeholder="Date of birth (optional)"
+            onfocus="(this.type='date', this.placeholder='MM-dd-yyyy')"
+            [min]="minDate"
+            [max]="maxDate"
+            formControlName="date"
+            [ngClass]="{'input-error': !isDateValid}"/>
+
+          <div style="height: 16px;" class="errors">{{showDateErrors()}}</div>
+        </div>
+
+        <div class="sex-container">
+          <input
+            #male
+            type="checkbox"
+            id="Male"
+            value="Male"
+            [checked]="male.value === selectedGender"
+            (change)="onGenderChange($event)">
+          <span>Male</span>
+
+          <input
+            #female
+            type="checkbox"
+            id="Female"
+            value="Female"
+            [checked]="female.value === selectedGender"
+            (change)="onGenderChange($event)" checked>
+          <span>Female</span>
+
+        </div>
+      </div>
+
+      <div>
+        <input
+          class="input-content"
+          type="text"
+          id="company"
+          value="ROSEN"
+          formControlName="company"
+          readonly/>
+
+      </div>
+
+      <div style="margin-top: 30px;" *ngIf=" (titles$ | async) as titlesData">
+        <select
+          class="title-dropdown-list"
+          id="title"
+          [ngClass]="{'input-error': isTitleError}">
+          <option value="-1" disabled selected hidden>Title</option>
+          <option
+            *ngFor="let title of titlesData"
+            value="{{title.id}}"
+
+
+            >{{title.name}}</option>
+        </select>
+
+        <div style="height: 18px;" *ngIf="isTitleError" class="errors">Please choose a title</div>
+      </div>
+
+      <div>
+        <input
+          class="input-content"
+          type="text"
+          id="email"
+          placeholder="Email"
+          formControlName="email"
+          [ngClass]="{
+            'input-error': (addForm.get('email').touched && !addForm.get('email').valid) && !addForm.get('email').hasError('uniqueEmail')
+            || !isUniqueEmail || isEmailRequired}"/>
+          <div *ngIf="addForm.get('email').touched" style="height: 16px;" class="errors">{{showEmailErrors()}}</div>
+          <div *ngIf="!isUniqueEmail && !isEmailRequired && !addForm.get('email').touched" style="height: 16px;" class="errors">{{showEmailErrors()}}</div>
+          <div *ngIf="isUniqueEmail && isEmailRequired && !addForm.get('email').touched" style="height: 16px;" class="errors">{{emailRequiredError}}</div>
+      </div>
+
+      <div class="dialog-footer">
+          <button class="discard-button" type="button" (click)="onCloseDialog()">DISCARD</button>
+
+          <button type="submit" class="btn btn-primary">{{getAddUpdateButtonName()}}</button>
+
+      </div>
+
+
+
+
+    </div>
+  </form>
 </div>
+
+<script>$('#date').datepicker({ dateFormat: 'dd-mm-yy' }).val();</script>

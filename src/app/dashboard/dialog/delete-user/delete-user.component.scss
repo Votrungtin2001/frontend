@@ -1,0 +1,103 @@
+.dialog {
+  &-container {
+    width: 540px;
+    height: fit-content;
+
+    .announcement {
+      margin-bottom: 16px;
+      text-align: left;
+      font: normal normal normal 16px/24px Roboto;
+      letter-spacing: 0px;
+      color: #5A5A5A;
+      opacity: 1;
+    }
+
+    .input-content {
+      width: 525px;
+      height: 30px;
+      background: #FFFFFF00 0% 0% no-repeat padding-box;
+      border: 1px solid #858585;
+      border-radius: 6px;
+      opacity: 1;
+      font: normal normal normal 16px/19px Roboto;
+      letter-spacing: 0px;
+      color: #858585;
+      padding-left: 12px;
+    }
+
+    .input-content:focus {
+      color: #721b1b;
+      font: normal normal bold 16px/19px Roboto;
+    }
+
+    .errors {
+      margin-left: 10px;
+      text-align: left;
+      font: normal normal 300 12px/16px Roboto;
+      letter-spacing: 0px;
+      color: #E64121;
+      opacity: 1;
+
+    }
+
+    .input-error {
+      border: red 0.01em solid;
+      margin-bottom: 0px;
+    }
+
+  }
+
+  &-footer {
+    width: 540px;
+    margin-top: 24px;
+    display: flex;
+
+    .cancel-button {
+      width: 60px;
+      height: 36px;
+      margin-left: auto;
+      margin-right: 24px;
+      text-align: center;
+      font: normal normal bold 14px/19px Roboto;
+      letter-spacing: 1.25px;
+      color: #32458F;
+      opacity: 1;
+      border: none;
+      background-color: transparent;
+    }
+
+    .cancel-button:hover {
+      color: #7e818a;
+      border: none;
+      background-color: transparent;
+    }
+
+    .delete-button {
+      width: 81px;
+      height: 36px;
+      background: #FB4646 0% 0% no-repeat padding-box;
+      border-radius: 4px;
+      opacity: 1;
+      border: none;
+      text-align: left;
+      font: normal normal bold 14px/19px Roboto;
+      letter-spacing: 0px;
+      color: #FFFFFF;
+      text-align: center;
+    }
+
+    .delete-button:hover {
+      background: #ff0000 0% 0% no-repeat padding-box;
+    }
+
+
+  }
+
+
+
+
+
+}
+
+
+

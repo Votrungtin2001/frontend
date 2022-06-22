@@ -11,8 +11,8 @@
       <div class="dashboard-sort">
         <span class="dashboard-sort-label">Sort by</span>
 
-        <select class="dashboard-sort-select">
-          <option *ngFor="let option of sortOptions">{{option.name}}</option>
+        <select id="sortOption" class="dashboard-sort-select" (change)="selectedSortOption()">
+          <option *ngFor="let option of sortOptions" value="{{option.id}}">{{option.name}}</option>
         </select>
 
         <span>
@@ -28,7 +28,7 @@
 
         <div class="input-container">
           <i class="material-icons">search</i>
-          <input class="input-content" type="text" placeholder="Search"/>
+          <input id="search" class="input-content" type="text" placeholder="Search" (input)="changeSearch($event)"/>
 
         </div>
 
@@ -39,7 +39,7 @@
   </div>
 
   <div class="dashboard-content">
-    <app-users-list></app-users-list>
+    <app-users-list [sortOptionId]="defaultSortOptionId" [isASC]="isASC" [searchQuery]="searchQuery"></app-users-list>
   </div>
 
 

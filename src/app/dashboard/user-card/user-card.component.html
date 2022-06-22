@@ -1,30 +1,30 @@
-<div class="user-card">
-  <img src="../../assets/images/avatar.jpg"/>
+<div class="user-card" (click)="onOpenUpdateEmployeeDialog()">
+  <img src="{{user.image}}"/>
 
   <div class="user-details">
     <div>
       <b>First name: </b>
-      <span>Chevalier</span>
+      <span>{{user.firstName}}</span>
     </div>
 
     <div>
       <b>Last name: </b>
-      <span>Deverille</span>
+      <span>{{user.lastName}}</span>
     </div>
 
     <div>
-      <b>Tenant: </b>
-      <span>Kuwait Petroleum Corporation</span>
+      <b>Company: </b>
+      <span>{{user.company}}</span>
     </div>
 
     <div>
       <b>Email Address: </b>
-      <span>cdeverille29@imageshack.us</span>
+      <span>{{user.email}}</span>
     </div>
 
     <div>
       <b>Status: </b>
-      <span>Active</span>
+      <span class="active">Active</span>
     </div>
 
   </div>
