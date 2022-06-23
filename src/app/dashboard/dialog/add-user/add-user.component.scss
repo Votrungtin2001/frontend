@@ -1,18 +1,20 @@
 .dialog {
   &-container {
-    width: 400px;
-    height: 515px;
+    width: 544px;
+    height: 650px;
+    margin-left: 12px;
+    margin-right: 12px;
   }
 
   &-header {
     height: auto;
-    width: 400px;
+    width: 544px;
     display: flex;
 
     .title {
       margin-top: 5px;
       text-align: center;
-      font: normal normal normal 20px/24px Roboto;
+      font: normal normal normal 24px/29px Roboto;
       letter-spacing: 0px;
       color: #3D3D3D;
       justify-content: center;
@@ -20,11 +22,11 @@
     }
 
     .add {
-      width: 500px;
+      width: 544px;
     }
 
     .update {
-      width: 500px;
+      width: 544px;
       display: flex;
       flex-direction: row;            /* default value; can be omitted */
       flex-wrap: nowrap;              /* default value; can be omitted */
@@ -79,7 +81,7 @@
   }
 
   &-content {
-    margin: 18px 0px 0px 0px;
+    margin: 24px 0px 0px 0px;
 
     .avatar {
       display: flex;
@@ -118,14 +120,15 @@
     }
 
     .input-content-first {
-      margin-top: 20px;
-      width: 385px;
-      height: 25px;
+      margin-top: 16px;
+      margin-left: 8px;
+      width: 520px;
+      height: 40px;
       background: #FFFFFF00 0% 0% no-repeat padding-box;
       border: 1px solid #858585;
       border-radius: 6px;
       opacity: 1;
-      font: normal normal normal 13px/16px Roboto;
+      font: normal normal normal 16px/19px Roboto;
       letter-spacing: 0px;
       color: #858585;
       padding-left: 12px;
@@ -133,13 +136,14 @@
 
     .input-content {
       margin-top: 10px;
-      width: 385px;
-      height: 25px;
+      margin-left: 8px;
+      width: 520px;
+      height: 40px;
       background: #FFFFFF00 0% 0% no-repeat padding-box;
       border: 1px solid #858585;
       border-radius: 6px;
       opacity: 1;
-      font: normal normal normal 13px/16px Roboto;
+      font: normal normal normal 16px/19px Roboto;
       letter-spacing: 0px;
       color: #858585;
       padding-left: 12px;
@@ -147,13 +151,14 @@
 
     .title-dropdown-list {
       margin-bottom: 21px;
-      width: 400px;
-      height: 30px;
+      margin-left: 8px;
+      width: 535px;
+      height: 45px;
       background: #FFFFFF00 0% 0% no-repeat padding-box;
       border: 1px solid #858585;
       border-radius: 6px;
       opacity: 1;
-      font: normal normal normal 13px/16px Roboto;
+      font: normal normal normal 16px/19px Roboto;
       letter-spacing: 0px;
       color: #858585;
       padding-left: 12px;
@@ -165,14 +170,16 @@
 
       .dob-container {
 
+        margin-left: 8px;
+
         .input-date-content {
           margin-top: 10px;
-          width: 215px;
-          height: 25px;
+          width: 289px;
+          height: 40px;
           background: #FFFFFF00 0% 0% no-repeat padding-box;
           border: 1px solid #858585;
           border-radius: 6px;
-          font: normal normal normal 13px/16px Roboto;
+          font: normal normal normal 16px/19px Roboto;
           letter-spacing: 0px;
           color: #777777;
           padding-left: 12px;
@@ -193,17 +200,17 @@
         input[type=checkbox] {
           width: 16px;
           height: 16px;
-          margin-top: 17px;
-          margin-left: 16px;
+          margin-top: 25px;
+          margin-left: 25px;
           accent-color: #374761;
           color: #374761;
         }
 
         span {
-          margin-top: 17px;
+          margin-top: 25px;
           margin-left: 8px;
           text-align: left;
-          font: normal normal normal 13px/16px Roboto;
+          font: normal normal normal 16px/19px Roboto;
           letter-spacing: 0px;
           color: #858585;
         }
@@ -240,13 +247,13 @@
     display: flex;
 
     .discard-button {
-      padding: 5px;
-      margin-top: 3px;
+      padding: 5px 0px 5px 5px;
+      margin-top: 6px;
       margin-left: auto;
-      margin-right: 10px;
+      margin-right: 5px;
       height: 19px;
       text-align: center;
-      font: normal normal bold 14px/16px Roboto;
+      font: normal normal bold 14px/19px Roboto;
       letter-spacing: 1.25px;
       color: #374761;
       opacity: 1;
@@ -263,12 +270,13 @@
     button {
       width: fit-content;
       padding: 5px 20px;
-      height: 32px;
+      width: 142px;
+      height: 36px;
       background: #00458F 0% 0% no-repeat padding-box;
       border-radius: 4px;
       opacity: 1;
       text-align: center;
-      font: normal normal bold 12px/15px Roboto;
+      font: normal normal medium 14px/19px Roboto;
       letter-spacing: 0px;
       color: #FFFFFF;
       border: none;
@@ -282,6 +290,413 @@
 
   }
 }
+
+// desktop styles
+@media screen and (min-width: 745px) and (max-width: 1280px){
+  .dialog {
+    &-container {
+      width: 400px;
+      height: 515px;
+      margin-left: 0px;
+      margin-right: 0px;
+    }
+
+    &-header {
+      width: 400px;
+
+      .title {
+        margin-top: 5px;
+        font: normal normal normal 20px/24px Roboto;
+      }
+
+      .add {
+        width: 500px;
+      }
+
+      .update {
+        width: 500px;
+
+        .edit-button {
+          font: normal normal bold 14px/19px Roboto;
+        }
+
+      }
+
+
+
+
+    }
+
+    &-content {
+      margin: 18px 0px 0px 0px;
+
+      .input-content-first {
+        margin-left: 0px;
+        width: 385px;
+        height: 25px;
+      }
+
+      .input-content {
+        margin-left: 0px;
+        width: 385px;
+        height: 25px;
+      }
+
+      .title-dropdown-list {
+        margin-left: 0px;
+        width: 400px;
+        height: 30px;
+      }
+
+      .dob-sex-container {
+        .dob-container {
+          margin-left: 0px;
+          .input-date-content {
+            width: 215px;
+            height: 25px;
+          }
+
+        }
+
+        .sex-container {
+          input[type=checkbox] {
+            margin-top: 17px;
+            margin-left: 16px;
+          }
+
+          span {
+            margin-top: 17px;
+            margin-left: 8px;
+          }
+
+        }
+      }
+
+    }
+
+    &-footer {
+
+      .discard-button {
+        width: 100px;
+        padding: 5px;
+        margin-top: 3px;
+        margin-right: 5px;
+        height: 19px;
+        font: normal normal bold 14px/16px Roboto;
+      }
+
+      button {
+        padding: 5px 20px;
+        height: 32px;
+        font: normal normal bold 12px/15px Roboto;
+      }
+
+    }
+  }
+}
+
+// tablet styles
+@media screen and (min-width: 361px) and (max-width: 744px){
+  .dialog {
+    &-container {
+      width: 360px;
+      height: 470px;
+      margin-left: 0px;
+      margin-right: 0px;
+    }
+
+    &-header {
+      width: 100%;
+
+      .title {
+        margin-top: 4px;
+        font: normal normal normal 16px/20px Roboto;
+      }
+
+      .add {
+        width: 100%;
+      }
+
+      .update {
+        width: 100%;
+
+        .edit-button {
+          font: normal normal bold 14px/19px Roboto;
+        }
+
+      }
+
+
+
+
+    }
+
+    &-content {
+      margin: 10px 0px 0px 0px;
+
+      .avatar {
+
+        .avatar{
+          width: 70px;
+          height: 70px;
+
+          .material-icons {
+            font-size: 35px;
+            color: #F5F5F5;
+            margin: 16px 16px;
+          }
+
+          img {
+            width: 70px;
+            height: 70px;
+          }
+
+        }
+
+
+
+      }
+
+      .input-content-first {
+        margin-left: 0px;
+        width: 335px;
+        height: 20px;
+        font-size: 13px;
+      }
+
+      .input-content {
+        margin-left: 0px;
+        width: 335px;
+        height: 20px;
+        font-size: 13px;
+      }
+
+      .title-dropdown-list {
+        margin-left: 0px;
+        width: 350px;
+        height: 25px;
+        font-size: 13px;
+      }
+
+      .dob-sex-container {
+
+        margin-left: 0px;
+
+        .dob-container {
+          margin-left: 0px;
+
+          .input-date-content {
+            width: 120px;
+            height: 20px;
+            font-size: 13px;
+          }
+
+        }
+
+        .sex-container {
+
+          margin-right: 20px;
+
+          input[type=checkbox] {
+            margin-top: 13px;
+            margin-left: 10px;
+          }
+
+          span {
+            margin-top: 13px;
+            margin-left: 5px;
+            font-size: 13px;
+          }
+
+        }
+      }
+
+    }
+
+    &-footer {
+      .discard-button {
+        width: 100px;
+        padding: 5px;
+        margin-top: 3px;
+        margin-right: 5px;
+        height: 19px;
+        font-size: 12px;
+      }
+
+      button {
+        padding: 5px 20px;
+        height: 32px;
+        font: normal normal bold 12px/15px Roboto;
+
+      }
+
+    }
+
+    .errors {
+      margin-left: 8px;
+      font-size: 10px;
+    }
+
+    .input-error {
+      border: red 0.01em solid;
+      margin-bottom: 0px;
+    }
+
+  }
+}
+
+// mobile styles
+@media screen and (max-width: 360px){
+  .dialog {
+    &-container {
+      width: 100%;
+      height: 100%;
+      margin-left: 0px;
+      margin-right: 0px;
+    }
+
+    &-header {
+      width: 100%;
+
+      .title {
+        margin-top: 2px;
+        font: normal normal normal 12px/14px Roboto;
+      }
+
+      .add {
+        width: 100%;
+      }
+
+      .update {
+        width: 100%;
+
+        button {
+          font: normal normal bold 10px/12px Roboto;
+        }
+
+        .edit-button {
+          .material-icons {
+            font-size: 14px;
+          }
+        }
+
+      }
+
+
+
+
+    }
+
+    &-content {
+      margin: 5px 0px 0px 0px;
+
+      .avatar {
+
+        .avatar{
+          width: 50px;
+          height: 50px;
+
+          .material-icons {
+            font-size: 25px;
+            color: #F5F5F5;
+            margin: 10px 8px;
+          }
+
+          img {
+            width: 50px;
+            height: 50px;
+          }
+
+        }
+      }
+
+
+      .input-content-first {
+        margin-left: 0px;
+        width: 220px;
+        height: 15px;
+        font-size: 11px;
+      }
+
+      .input-content {
+        margin-left: 0px;
+        width: 220px;
+        height: 15px;
+        font-size: 11px;
+      }
+
+      .title-dropdown-list {
+        margin-left: 0px;
+        width: 235px;
+        height: 20px;
+        font-size: 11px;
+      }
+
+      .dob-sex-container {
+
+        margin-left: 0px;
+
+        .dob-container {
+          margin-left: 0px;
+
+          .input-date-content {
+            margin-left: 0px;
+            width: 80px;
+            height: 15px;
+            font-size: 11px;
+          }
+
+        }
+
+        .sex-container {
+
+          margin-right: 10px;
+
+          input[type=checkbox] {
+            margin-top: 13px;
+            margin-left: 15px;
+            width: 12px;
+            height: 12px;
+          }
+
+          span {
+            margin-top: 10px;
+            margin-left: 5px;
+            font-size: 11px;
+          }
+
+        }
+      }
+
+    }
+
+    &-footer {
+      .discard-button {
+        width: 70px;
+        margin-top: 3px;
+        margin-right: 5px;
+        height: 13px;
+        font-size: 11px;
+      }
+
+      button {
+        padding: 5px 8px;
+        height: 30px;
+        width: fit-content;
+        font-size: 11px;
+
+      }
+
+    }
+
+    .errors {
+      margin-left: 6px;
+      font-size: 8px;
+    }
+
+  }
+}
+
 
 
 

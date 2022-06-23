@@ -1,6 +1,6 @@
 import { AfterContentChecked, AfterViewInit, ChangeDetectorRef, Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import {faPlus} from '@fortawesome/free-solid-svg-icons'
+import {faPlus, faSleigh} from '@fortawesome/free-solid-svg-icons'
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { Title } from '../model/title.model';
@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit,Afte
   sortOptions = [];
   defaultSearchQuery = "";
   searchQuery = "";
+  isSearching = false;
   defaultSortOptionId = 1;
   selectedSortOptionId = 1;
 
@@ -112,6 +113,11 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit,Afte
 
   changeSearch(event) {
     this.searchQuery = event.target.value;
+    this.isSearching = true;
+  }
+
+  updateIsSearching(value: boolean) {
+    if(value == false) this.isSearching = value;
   }
 
 }

@@ -2,28 +2,113 @@
 
 .user-card {
   background-color: #fff;
-  width: 380px;
+  width: 445px;
   height: 128px;
   display: flex;
-  margin-right: 5px;
 
-  .img {
+  img {
     width: 128px;
     height: 128px;
+    object-fit: cover;
   }
 }
 
+
+
 .user-details {
-  margin: 20px 10px;
+  margin: 10px 10px;
   text-align: left;
-  font: normal normal normal 12px/18px Roboto;
+  font: normal normal normal 14px/21px Roboto;
   letter-spacing: 0px;
   color: #3D3D3D;
 
   .active {
     text-align: left;
-    font: normal normal normal 12px/18px Roboto;
+    font: normal normal normal 14px/21px Roboto;
     letter-spacing: 0px;
     color: #50B849;
   }
 }
+
+// desktop styles
+@media screen and (min-width: 745px) and (max-width: 1280px){
+  .user-card {
+    width: 385px;
+    height: 108px;
+
+    img {
+      width: 108px;
+      height: 108px;
+    }
+  }
+
+
+  .user-details {
+    margin: 10px 10px;
+    font: normal normal normal 12px/18px Roboto;
+
+    .active {
+      font: normal normal normal 12px/18px Roboto;
+    }
+
+
+  }
+}
+
+// tablet styles
+@media screen and (min-width: 361px) and (max-width: 744px){
+  .user-card {
+    width: 340px;
+    height: 100px;
+
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  .user-details {
+    margin: 10px 10px;
+    font-size: 11px;
+
+    .active {
+      font-size: 11px;
+    }
+
+    div {
+      height: 15px;
+    }
+
+
+
+  }
+}
+
+// mobile styles
+@media screen and (max-width: 360px){
+ .user-card {
+    width: 155px;
+    height: 45px;
+
+    img {
+      width: 45px;
+      height: 45px;
+    }
+  }
+
+  .user-details {
+    margin: 0px 5px;
+    margin-bottom: 6px;
+    font-size: 5px;
+
+    div {
+      display: flex;
+      height: 7px;
+    }
+
+    .active {
+      font-size: 6px;
+    }
+  }
+}
+

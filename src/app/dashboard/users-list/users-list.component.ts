@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable} from 'rxjs';
 import { Title } from 'src/app/model/title.model';
@@ -13,15 +13,19 @@ import { getInitialUsers} from 'src/app/state/users/users.selectors';
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.scss']
 })
-export class UsersListComponent implements OnInit, OnChanges {
+export class UsersListComponent implements OnInit, OnChanges, AfterContentChecked {
 
   titles$: Observable<Title[]>;
   users$: Observable<User[]>;
   expand: number[] = new Array();
 
+  @Output() passingEvent = new EventEmitter<boolean>();
+
   @Input() sortOptionId: number;
   @Input() isASC: boolean;
   @Input() searchQuery: string;
+  @Input() isSearching: boolean;
+  defaultIsSearching = false;
 
 
   constructor(
@@ -30,7 +34,31 @@ export class UsersListComponent implements OnInit, OnChanges {
     private cdRef : ChangeDetectorRef,
   ) { }
 
+  ngAfterContentChecked(): void {
+
+  }
+
+
   ngOnChanges(): void {
+    if(this.defaultIsSearching != this.isSearching) {
+      this.defaultIsSearching = this.isSearching;
+    }
+    if(this.defaultIsSearching && this.searchQuery != "") {
+      this.expand = [];
+      this.titles$.subscribe(titles => {
+        titles.forEach(title => {
+          this.expand.push(title.id);
+        });
+      })
+    }
+    this.defaultIsSearching = false;
+    this.updateIsSearching();
+
+  }
+
+
+  updateIsSearching() {
+    this.passingEvent.emit(this.defaultIsSearching);
   }
 
   ngOnInit(): void {
@@ -82,6 +110,9 @@ export class UsersListComponent implements OnInit, OnChanges {
     const usersAfterSortBeforeSearch = this.userService.getUsersBySortOption(this.sortOptionId, this.isASC, usersBeforeSortBeforeSearch);
     const usersAfterSortAfterSearch = this.userService.getUsersBySearch(this.searchQuery.toLowerCase(), usersAfterSortBeforeSearch);
     const results = usersAfterSortAfterSearch;
+    if(results.length == 0) {
+      this.expand = this.expand.filter((element) => element != titleId);
+    }
     return results;
   }
 

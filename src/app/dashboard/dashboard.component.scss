@@ -1,11 +1,7 @@
 .dashboard {
   &-container {
-    /* Layout Properties */
-    max-width: 1920px;
     width: 100%;
-    max-height: 744px;
     height: 90%;
-    /* UI Properties */
     background: #EEEEEE 0% 0% no-repeat padding-box;
     opacity: 1;
   }
@@ -13,15 +9,14 @@
   &-top {
     display: flex;
     justify-content: space-between;
-    height: 92px;
-
+    height: auto;
   }
 
   &-top-left {
+    margin-top: 32px;
     button {
-      margin-top: 32px;
-      margin-left: 32px;
-      height: 36px;
+      margin-left: 24px;
+      padding: 12px;
       width: 148px;
       background: #00458F 0% 0% no-repeat padding-box;
       border-radius: 4px;
@@ -45,14 +40,12 @@
   &-top-right {
     display: flex;
     margin-right: 24px;
+    margin-top: 32px;
   }
 
   &-sort {
-    margin: 32px 0px;
 
     &-label {
-      margin-top: 9px;
-      margin-bottom: 8px;
       margin-right: 5px;
       text-align: left;
       font: normal normal normal 16px/19px Roboto;
@@ -61,11 +54,11 @@
     }
 
     &-select {
-      width: 132px;
-      height: 36px;
+      width: 180px;
+      height: 38px;
       font: normal normal normal 14px/17px Roboto;
       color: #374761;
-      padding: 3px 3px .3px 12px;
+      padding: 3px 3px 3px 12px;
       background-position: right 1rem center;
       border-radius: 6px;
       border-color: #4a4c4e;
@@ -73,9 +66,8 @@
     }
 
     button {
-      margin: 7px 16px 5px 8px;
-      width: 24px;
-      height: 24px;
+      width: 38px;
+      height: 38px;
       position: relative;
       border: none;
     }
@@ -87,7 +79,6 @@
   }
 
   &-search {
-    margin-top: 32px;
     display: flex;
 
     .vr {
@@ -99,7 +90,7 @@
     }
 
     .input-container {
-      width: 292px;
+      width: 400px;
       height: 36px;
       background: hsla(0, 0%, 100%, 1) 0% 0% no-repeat padding-box;
       border: 0.5px solid hsla(0, 0%, 47%, 1);
@@ -110,6 +101,7 @@
 
     .input-content {
       margin-left: 8px;
+      margin-top: 1px;
       width: 75%;
       border: none;
       text-align: left;
@@ -131,9 +123,174 @@
 
   &-content {
     width: auto;
+    margin-top: 24px;
   }
 
+}
 
+
+// desktop styles
+@media screen and (min-width: 745px) and (max-width: 1280px){
+
+}
+
+// tablet styles
+@media screen and (min-width: 361px) and (max-width: 744px){
+  .dashboard {
+    &-top-left {
+      margin-top: 24px;
+      button {
+        margin-left: 16px;
+        width: 110px;
+        font-size: 10px;
+        padding: 8px 10px 8px 10px;
+       }
+
+       button fa-icon {
+        margin-right: 6px;
+        font-size: 10px;
+       }
+    }
+
+    &-top-right {
+      margin-right: 16px;
+      margin-top: 24px;
+    }
+
+    &-sort {
+      &-label {
+        margin-right: 4px;
+        font-size: 13px;
+      }
+
+      &-select {
+        width: 110px;
+        height: 27px;
+        padding-left: 8px;
+        font-size: 13px;
+      }
+
+      button {
+        width: 27px;
+        height: 27px;
+      }
+
+      .material-icons {
+        font-size: 12px
+      }
+
+    }
+
+    &-search {
+
+      .vr {
+        margin: 3px 12px 3px 0px;
+        width: 1px;
+        height: 20px;
+      }
+
+      .input-container {
+        width: 200px;
+        height: 27px;
+      }
+
+      .input-content {
+        margin-left: 6px;
+        margin-bottom: 1px;
+        width: 70%;
+        font-size: 13px;
+      }
+
+      .material-icons {
+        margin: 2px 0px 2px 8px;
+        font-size: 24px;
+        color: #777777;
+      }
+    }
+
+    &-content {
+      margin-top: 16px;
+    }
+
+  }
+}
+
+// mobile styles
+@media screen and (max-width: 360px){
+  .dashboard {
+    &-top-left {
+      margin-top: 16px;
+      button {
+        margin-left: 16px;
+        width: 60px;
+        font-size: 5px;
+        padding: 5px 5px 5px 5px;
+       }
+
+       button fa-icon {
+        margin-right: 4px;
+        font-size: 8px;
+       }
+    }
+
+    &-top-right {
+      margin-right: 16px;
+      margin-top: 16px;
+    }
+
+    &-sort {
+      &-label {
+        margin-right: 2px;
+        font-size: 8px;
+      }
+
+      &-select {
+        width: 50px;
+        height: 19px;
+        padding-left: 3px;
+        font-size: 8px;
+      }
+
+      button {
+        width: 19px;
+        height: 19px;
+      }
+
+      .material-icons {
+        font-size: 9px
+      }
+
+    }
+
+    &-search {
+      .vr {
+        margin: 2px 8px 2px 0px;
+        width: 1px;
+        height: 16px;
+      }
+
+      .input-container {
+        width: 100px;
+        height: 19px;
+      }
+
+      .input-content {
+        margin-left: 3px;
+        margin-bottom: 1px;
+        width: 60%;
+        font-size: 8px;
+      }
+
+      .material-icons {
+        margin: 2px 0px 2px 4px;
+        font-size: 15px;
+      }
+    }
+
+    &-content {
+      margin-top: 16px;
+    }
+  }
 
 }
 

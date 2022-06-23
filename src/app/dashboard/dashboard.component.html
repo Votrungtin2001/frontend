@@ -1,7 +1,7 @@
 <div class="dashboard-container">
   <div class="dashboard-top">
     <div class="dashboard-top-left">
-      <button (click)="onOpenAddEmployeeDialog()">
+      <button type="button" (click)="onOpenAddEmployeeDialog()">
         <fa-icon [icon]="faPlus"></fa-icon>
         CREATE USER
       </button>
@@ -17,7 +17,7 @@
 
         <span>
 
-          <button (click)="onClickOrder()">
+          <button type="button" (click)="onClickOrder()">
             <i class="material-icons">{{getOrderIcon()}}</i>
           </button>
         </span>
@@ -28,7 +28,12 @@
 
         <div class="input-container">
           <i class="material-icons">search</i>
-          <input id="search" class="input-content" type="text" placeholder="Search" (input)="changeSearch($event)"/>
+          <input
+            id="search"
+            class="input-content"
+            type="text"
+            placeholder="Search"
+            (input)="changeSearch($event)"/>
 
         </div>
 
@@ -39,7 +44,12 @@
   </div>
 
   <div class="dashboard-content">
-    <app-users-list [sortOptionId]="defaultSortOptionId" [isASC]="isASC" [searchQuery]="searchQuery"></app-users-list>
+    <app-users-list
+      [sortOptionId]="defaultSortOptionId"
+      [isASC]="isASC"
+      [searchQuery]="defaultSearchQuery"
+      [isSearching]="isSearching"
+      (passingEvent)="updateIsSearching($event)"></app-users-list>
   </div>
 
 

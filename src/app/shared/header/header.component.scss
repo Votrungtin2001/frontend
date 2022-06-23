@@ -8,8 +8,6 @@
     top: 0px;
     left: 0px;
     width: 100%;
-    max-width: 1920px;
-    max-height: 56px;
     height: auto;
     /* UI Properties */
     background: rgba(255, 255, 255, 0.4);
@@ -19,7 +17,7 @@
   &-logo {
     /* Layout Properties */
     top: 12px;
-    left: 24px;
+    margin-left: 16px;
     max-width: 120px;
     max-height: 32px;
     height: auto;
@@ -29,7 +27,7 @@
   }
 
   &-nav {
-    margin-right: 24px;
+    margin-right: 16px;
 
   }
 }
@@ -47,10 +45,46 @@ button {
   background-color: transparent;
 }
 
-button:hover {
-  background-color: rgb(228, 228, 228)  
-}
-
 .material-icons {
   color: #00458F;
+}
+
+.material-icons:hover {
+  color: #278af4;
+}
+
+
+
+// desktop styles
+@media screen and (min-width: 745px) and (max-width: 1280px){
+
+}
+
+// tablet styles
+@media screen and (min-width: 361px) and (max-width: 744px){
+  .navbar {
+    &-logo {
+      margin-left: 8px;
+    }
+
+    &-nav {
+      margin-right: 8px;
+    }
+  }
+
+
+
+}
+
+// mobile styles
+@media screen and (max-width: 360px){
+  .navbar {
+    &-logo {
+      margin-left: 8px;
+    }
+
+    &-nav {
+      margin-right: 8px;
+    }
+  }
 }
