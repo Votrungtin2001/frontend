@@ -1,16 +1,25 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { faHomeUser } from '@fortawesome/free-solid-svg-icons';
+import { Store } from '@ngrx/store';
 import { catchError, concatMap, filter, map, mergeMap, Observable, of, pipe, tap } from 'rxjs';
-import { BASE_URL, STORAGE_URL } from '../constants/variables';
+import { BASE_URL, INTERNAPP_URL ,STORAGE_URL } from '../constants/variables';
+import { Title } from '../model/title.model';
 import { User } from '../model/user.model';
+import { AppState } from '../state/store/app.state';
+import { getInitialUsersByTitle } from '../state/users/users.action';
+import { UsersGroupByTitle } from '../state/users/users.state';
+import { ErrorService } from './error.service';
+import { ImageService } from './image.service';
+import { UnitMethodService } from './unit-method.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private usersUrl = `${BASE_URL}/users`
+  //private usersUrl = `${BASE_URL}/users`
+  private usersUrl = `${INTERNAPP_URL}/user`
 
   private sortOptions = [
     { id: 1, name: "Created date"},
@@ -24,221 +33,212 @@ export class UserService {
   };
 
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private store: Store<AppState>,
+    private errorService: ErrorService,
+    private unitMethodService: UnitMethodService,
+    private imageService: ImageService) { }
 
-   /**
- * Handle Http operation that failed.
- * Let the app continue.
- *
- * @param operation - name of the operation that failed
- * @param result - optional value to return as the observable result
- */
-    private handleError<T>(operation = 'operation', result?: T) {
-      return (error: any): Observable<T> => {
-
-        // TODO: send the error to remote logging infrastructure
-        console.error(error); // log to console instead
-
-        // TODO: better job of transforming error for user consumption
-
-        // Let the app keep running by returning an empty result.
-        return of(result as T);
-      };
+  //DEFAULT METHOD
+  //Create model based on input
+  createUserModel(user: User, dateFormatter: string): User {
+    const userDob = this.unitMethodService.dateFormatter(user.UserDob, dateFormatter);
+    const userModel: User = {
+      UserId: user.UserId,
+      UserFirstName: user.UserFirstName,
+      UserLastName: user.UserLastName,
+      UserDob: userDob,
+      UserGender: user.UserGender,
+      UserCompany: user.UserCompany,
+      UserTitleId: user.UserTitleId,
+      UserEmail: user.UserEmail,
+      UserImage: user.UserImage,
+      UserCreatedDate: user.UserCreatedDate,
     }
+    return userModel;
+  }
 
+  createUsersGroupByTitle(titleId: number, users: User[]): UsersGroupByTitle{
+    const usersGroupByTitleModel: UsersGroupByTitle = {
+      users: users,
+      titleId: titleId,
+    }
+    return usersGroupByTitleModel;
+  }
+
+  //SORTING
+  //Get initial sort options
   getSortOptions() {
     return this.sortOptions;
   }
 
+  //Get a list of users based on sort option after searching
+  getUsersBySortOption(sortOptionId: number, isASC: boolean, usersByTitle: any[]) {
+    const temps = [...usersByTitle];
+    const results = [];
+    temps.forEach((temp) => {
+      const arrayForSort = temp.slice();
+      if (arrayForSort.length > 1) {
+        switch(sortOptionId) {
+          case 1: //Created Date
+            if(isASC == true) {
+              arrayForSort.sort((a,b) => a.UserCreatedDate - b.UserCreatedDate);
+            }
+            else {
+              arrayForSort.sort((a,b) => b.UserCreatedDate - a.UserCreatedDate);
+            }
+            break;
+          case 2: // User Last Name
+            if(isASC == true) {
+              arrayForSort.sort((a,b) => a.UserLastName.localeCompare(b.UserLastName));
+            }
+            else {
+              arrayForSort.sort((a,b) => b.UserLastName.localeCompare(a.UserLastName));
+            }
+            break;
+          case 3: //User First Name
+            if(isASC == true) {
+              arrayForSort.sort((a,b) => a.UserFirstName.localeCompare(b.UserFirstName));
+            }
+            else {
+              arrayForSort.sort((a,b) => b.UserFirstName.localeCompare(a.UserFirstName));
+            }
+            break;
+          default: //User Email
+            if(isASC == true) {
+              arrayForSort.sort((a,b) => a.UserEmail.localeCompare(b.UserEmail));
+            }
+            else {
+              arrayForSort.sort((a,b) => b.UserEmail.localeCompare(a.UserEmail));
+            }
+        }
+      }
+      results.push(arrayForSort);
+    })
+    return results;
+  }
+
+  //Get a list of users (without condition)
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.usersUrl).pipe(
       tap(_ => console.log('fetched users')),
-      catchError(this.handleError<User[]>('getUsers', []))
+      catchError(this.errorService.handleError<User[]>('getUsers', []))
     )
   }
 
-  getUsersByTitleId(titleId: number, users: User[]): User[] {
-    const results = users.filter(user => user.titleId == titleId
+  //Get a list of users grouped by title id after searching
+  getUsersByTitleId(titleId: number, searchText: string): Observable<User[]> {
+    if(searchText == "") {
+      return this.http.get<any>(`${this.usersUrl}/bytitle/${titleId}`)
+      .pipe(
+        tap(),
+        catchError(this.errorService.handleError<User[]>('getUserByTitleId', []))
+      );
+    }
+    //Create data model
+    let data = {
+      titleId: titleId,
+      searchText: searchText
+    }
+
+    return this.http.post<any>(`${this.usersUrl}/bytitlewithsearch`, data,  this.httpOptions)
+    .pipe(
+      tap(),
+      catchError(this.errorService.handleError<User[]>('getUserByTitleId', []))
     );
-    return results;
   }
 
-  getUserByEmail(email: string) {
-    return this.http.get<any[]>(`${this.usersUrl}?email=${email}`);
-  }
-
-  getUsersBySortOption(sortOptionId: number, isASC: boolean, users: User[]) {
-    const results = [...users];
-    if(sortOptionId == 1) { //Created date
-      if(isASC == true) {
-        results.sort((a,b) => {
-          return a.createdDate - b.createdDate;
-        });
-      }
-      else {
-        results.sort((a,b) => {
-          return b.createdDate - a.createdDate;
-        });
-      }
-    }
-    else if(sortOptionId == 2) {
-      if(isASC == true) {
-        results.sort((a,b) => {
-          return a.lastName.localeCompare(b.lastName);
-        });
-      }
-      else {
-        results.sort((a,b) => {
-          return b.lastName.localeCompare(a.lastName);
-        });
-      }
-    }
-    else if(sortOptionId == 3) {
-      if(isASC == true) {
-        results.sort((a,b) => {
-          return a.firstName.localeCompare(b.firstName);
-        });
-      }
-      else {
-        results.sort((a,b) => {
-          return b.firstName.localeCompare(a.firstName);
-        });
-      }
-    }
-    else if(sortOptionId == 4) {
-      if(isASC == true) {
-        results.sort((a,b) => {
-          return a.email.localeCompare(b.email);
-        });
-      }
-      else {
-        results.sort((a,b) => {
-          return b.email.localeCompare(a.email);
-        });
-      }
-    }
-
-
-    return results;
-
-  }
-
-  getUsersBySearch(search: string, users: User[]) {
-    const results = [...users];
-    if(search == "") return results;
-    else return results.filter((user) => {
-      if(user.firstName.toLowerCase().includes(search) ||
-        user.lastName.toLowerCase().includes(search) ||
-        user.id.toString() == search ||
-        user.gender == search ||
-        user.company.toLowerCase() == search ||
-        user.email.includes(search)) return user;
-      else return null;
+  //Get a list of users grouped by all title after searching
+  getUsersByTitle(titles: Title[], searchText: string) {
+    let usersByTitle: UsersGroupByTitle[] = [];
+    titles.map((title) => {
+      const usersByTitleId = this.getUsersByTitleId(title.TitleId, searchText);
+      usersByTitleId.subscribe((data) => {
+        let users = [];
+        if(data.length > 0) {
+          data.map((u) => {
+            const user = this.createUserModel(u, 'MM-dd-yyyy');
+            users.push(user);
+          })
+        }
+        if(users.length > 0) {
+          const result = this.createUsersGroupByTitle(title.TitleId, users);
+          usersByTitle = [...usersByTitle, result];
+        }
+        //Save usersByTitle in store
+        this.store.dispatch(getInitialUsersByTitle({usersGroupByTitle : usersByTitle}));
+      })
     })
   }
 
-  uploadImageAndGetUrl(image: File) {
-    const formData = new FormData()
-    formData.append("file", image);
-    formData.append("upload_preset", "ycm6bhqu")
-    formData.append("cloud_name", "social-butterfly")
-
-    return this.http.post(`${STORAGE_URL}`, formData);
+  //EMAIL
+  checkEmailExists(email: string) {
+    return this.http.get<boolean>(`${this.usersUrl}/email/${email}`);
   }
 
-  getNewIdUser() {
-    const users$ = this.getUsers();
-    return users$.pipe(
-      map(data => {
-        const newUserID = data[data.length - 1].id + 1;
-        return newUserID;
-      })
-    );
-  }
-
+  //ADD USER
   addUser(image: File, newUser: User) {
     if(image == null) {
-      newUser.image = "https://firebasestorage.googleapis.com/v0/b/be-beauty-app.appspot.com/o/avatar.jpg?alt=media&token=4cb911b2-3282-4aea-b03a-0ab9b681602a";
-      return this.getNewIdUser().pipe(
-        mergeMap((data) => {
-          newUser.id = data;
+      newUser.UserImage = "https://firebasestorage.googleapis.com/v0/b/be-beauty-app.appspot.com/o/avatar.jpg?alt=media&token=4cb911b2-3282-4aea-b03a-0ab9b681602a";
+      return this.http.post<User>(this.usersUrl, newUser, this.httpOptions).pipe(
+        tap((user: User) => {
+          console.log('add user success')
+        }),
+        catchError(this.errorService.handleError<User>('addUser'))
+      );
+    }
+    return this.imageService.uploadImageAndGetUrl(image).pipe(
+      mergeMap((response: any) => {
+        const imageUrl = response.secure_url;
+        if (imageUrl != null) {
+          newUser.UserImage = imageUrl;
           return this.http.post<User>(this.usersUrl, newUser, this.httpOptions).pipe(
             tap((user: User) => {
               console.log('add user success')
             }),
-            catchError(this.handleError<User>('addUser'))
+            catchError(this.errorService.handleError<User>('addUser'))
           );
-        })
-      );
-    }
-    else {
-      return this.uploadImageAndGetUrl(image).pipe(
-        mergeMap((response: any) => {
-          const imageUrl = response.secure_url;
-          if (imageUrl != null) {
-            newUser.image = imageUrl;
-            return this.getNewIdUser().pipe(
-              mergeMap((data) => {
-                newUser.id = data;
-                return this.http.post<User>(this.usersUrl, newUser, this.httpOptions).pipe(
-                  tap((user: User) => {
-                    console.log('add user success')
-                  }),
-                  catchError(this.handleError<User>('addUser'))
-                );
-              })
-            );
-          }
-          else return null;
-
-        })
-      );
-    }
-
-
-  }
-
-  deleteUser(userId: number) {
-    return this.http.delete<User>(`${this.usersUrl}/` + userId).pipe(
-      tap((user: User) => {
-        console.log('delete user success')
-      }),
-      catchError(this.handleError<User>('deleteUser'))
+        }
+        return null;
+      })
     );
   }
 
+  //UPDATE USER
   updateUser(image: File, user: User) {
     if(image == null) {
-      return this.http.put<User>(`${this.usersUrl}/` + user.id, user).pipe(
+      return this.http.patch<User>(`${this.usersUrl}`, user, this.httpOptions).pipe(
         tap((user: User) => {
           console.log('update user success')
         }),
-        catchError(this.handleError<User>('updateUser'))
+        catchError(this.errorService.handleError<User>('updateUser'))
       );
     }
-    else {
-      return this.uploadImageAndGetUrl(image).pipe(
-        mergeMap((response: any) => {
-          const imageUrl = response.secure_url;
-          if (imageUrl != null) {
-            user.image = imageUrl;
-            return this.http.put<User>(`${this.usersUrl}/` + user.id, user).pipe(
-              tap((user: User) => {
-                console.log('update user success')
-              }),
-              catchError(this.handleError<User>('updateUser'))
-            );
-          }
-          else return null;
-
-        })
-      );
-    }
+    return this.imageService.uploadImageAndGetUrl(image).pipe(
+      mergeMap((response: any) => {
+        const imageUrl = response.secure_url;
+        if (imageUrl != null) {
+          user.UserImage = imageUrl;
+          return this.http.patch<User>(`${this.usersUrl}`, user, this.httpOptions).pipe(
+            tap((user: User) => {
+              console.log('update user success')
+            }),
+            catchError(this.errorService.handleError<User>('updateUser'))
+          );
+        }
+        return null;
+      })
+    );
   }
 
-  validateEmail(email: string) {
-    return email.match(
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  //DELETE USER
+  deleteUser(userId: number) {
+    return this.http.delete<any>(`${this.usersUrl}/` + userId).pipe(
+      tap(_ => {
+        console.log('delete user success')
+      }),
+      catchError(this.errorService.handleError<any>('deleteUser'))
     );
   }
 }

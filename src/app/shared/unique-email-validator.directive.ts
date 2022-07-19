@@ -18,9 +18,9 @@ export class UniqueEmailValidatorDirective implements AsyncValidator {
   ) { }
 
   validate(control: AbstractControl<any, any>): Promise<ValidationErrors> | Observable<ValidationErrors> {
-    return this.userService.getUserByEmail(control.value).pipe(
-      map(users => {
-        return users && users.length > 0 ? {'uniqueEmail': true} : null;
+    return this.userService.checkEmailExists(control.value).pipe(
+      map(result => {
+        return result ? {'uniqueEmail': true} : null;
       })
     )
   }

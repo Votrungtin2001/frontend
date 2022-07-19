@@ -62,6 +62,14 @@
           color:#3D3D3D;
         }
 
+        .off {
+          color:#2f5bb3;
+        }
+
+        .on {
+          color:#3D3D3D;
+        }
+
         .material-icons:hover {
           color:#bebebe;
         }
@@ -71,13 +79,7 @@
         border: none;
         background-color: transparent;
       }
-
-
     }
-
-
-
-
   }
 
   &-content {
@@ -104,8 +106,6 @@
           height: 80px;
         }
 
-
-
         label:hover .material-icons::before {
           content:"add";
         }
@@ -114,9 +114,6 @@
           content:"person_outline";
         }
       }
-
-
-
     }
 
     .input-content-first {
@@ -169,7 +166,6 @@
       justify-content: space-between;
 
       .dob-container {
-
         margin-left: 8px;
 
         .input-date-content {
@@ -190,8 +186,6 @@
           border: red 0.01em solid;
           margin-bottom: 0px;
         }
-
-
       }
 
       .sex-container {
@@ -214,16 +208,12 @@
           letter-spacing: 0px;
           color: #858585;
         }
-
       }
-
-
 
       ::-webkit-calendar-picker-indicator {
         background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 24 24"><path fill="%23bbbbbb" d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>');
       }
     }
-
 
     .errors {
       margin-left: 10px;
@@ -232,14 +222,12 @@
       letter-spacing: 0px;
       color: #E64121;
       opacity: 1;
-
     }
 
     .input-error {
       border: red 0.01em solid;
       margin-bottom: 0px;
     }
-
   }
 
   &-footer {
@@ -286,8 +274,6 @@
     button:hover {
       background: #3783d3 0% 0% no-repeat padding-box;
     }
-
-
   }
 }
 
@@ -319,12 +305,7 @@
         .edit-button {
           font: normal normal bold 14px/19px Roboto;
         }
-
       }
-
-
-
-
     }
 
     &-content {
@@ -355,7 +336,6 @@
             width: 215px;
             height: 25px;
           }
-
         }
 
         .sex-container {
@@ -368,14 +348,11 @@
             margin-top: 17px;
             margin-left: 8px;
           }
-
         }
       }
-
     }
 
     &-footer {
-
       .discard-button {
         width: 100px;
         padding: 5px;
@@ -390,7 +367,6 @@
         height: 32px;
         font: normal normal bold 12px/15px Roboto;
       }
-
     }
   }
 }
@@ -423,19 +399,13 @@
         .edit-button {
           font: normal normal bold 14px/19px Roboto;
         }
-
       }
-
-
-
-
     }
 
     &-content {
       margin: 10px 0px 0px 0px;
 
       .avatar {
-
         .avatar{
           width: 70px;
           height: 70px;
@@ -450,11 +420,7 @@
             width: 70px;
             height: 70px;
           }
-
         }
-
-
-
       }
 
       .input-content-first {
@@ -479,7 +445,6 @@
       }
 
       .dob-sex-container {
-
         margin-left: 0px;
 
         .dob-container {
@@ -490,11 +455,9 @@
             height: 20px;
             font-size: 13px;
           }
-
         }
 
         .sex-container {
-
           margin-right: 20px;
 
           input[type=checkbox] {
@@ -507,10 +470,8 @@
             margin-left: 5px;
             font-size: 13px;
           }
-
         }
       }
-
     }
 
     &-footer {
@@ -527,9 +488,7 @@
         padding: 5px 20px;
         height: 32px;
         font: normal normal bold 12px/15px Roboto;
-
       }
-
     }
 
     .errors {
@@ -541,10 +500,142 @@
       border: red 0.01em solid;
       margin-bottom: 0px;
     }
-
   }
 }
 
+@media screen and (max-width: 500px){
+  .dialog {
+    &-container {
+      width: 100%;
+      height: 100%;
+      margin-left: 0px;
+      margin-right: 0px;
+    }
+
+    &-header {
+      width: 100%;
+      .title {
+        margin-top: 2px;
+        font: normal normal normal 12px/14px Roboto;
+      }
+
+      .add {
+        width: 100%;
+      }
+
+      .update {
+        width: 100%;
+
+        button {
+          font: normal normal bold 10px/12px Roboto;
+        }
+
+        .edit-button {
+          .material-icons {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+    &-content {
+      margin: 5px 0px 0px 0px;
+
+      .avatar {
+        .avatar{
+          width: 50px;
+          height: 50px;
+
+          .material-icons {
+            font-size: 25px;
+            color: #F5F5F5;
+            margin: 10px 8px;
+          }
+
+          img {
+            width: 50px;
+            height: 50px;
+          }
+        }
+      }
+
+      .input-content-first {
+        margin-left: 0px;
+        width: 220px;
+        height: 15px;
+        font-size: 11px;
+      }
+
+      .input-content {
+        margin-left: 0px;
+        width: 220px;
+        height: 15px;
+        font-size: 11px;
+      }
+
+      .title-dropdown-list {
+        margin-left: 0px;
+        width: 235px;
+        height: 20px;
+        font-size: 11px;
+      }
+
+      .dob-sex-container {
+        margin-left: 0px;
+
+        .dob-container {
+          margin-left: 0px;
+
+          .input-date-content {
+            margin-left: 0px;
+            width: 80px;
+            height: 15px;
+            font-size: 11px;
+          }
+        }
+
+        .sex-container {
+          margin-right: 10px;
+
+          input[type=checkbox] {
+            margin-top: 13px;
+            margin-left: 15px;
+            width: 12px;
+            height: 12px;
+          }
+
+          span {
+            margin-top: 10px;
+            margin-left: 5px;
+            font-size: 11px;
+          }
+        }
+      }
+    }
+
+    &-footer {
+      .discard-button {
+        width: 70px;
+        margin-top: 3px;
+        margin-right: 5px;
+        height: 13px;
+        font-size: 11px;
+      }
+
+      button {
+        padding: 5px 8px;
+        height: 30px;
+        width: fit-content;
+        font-size: 11px;
+      }
+    }
+
+    .errors {
+      margin-left: 6px;
+      font-size: 8px;
+    }
+  }
+}
 // mobile styles
 @media screen and (max-width: 360px){
   .dialog {
@@ -579,19 +670,13 @@
             font-size: 14px;
           }
         }
-
       }
-
-
-
-
     }
 
     &-content {
       margin: 5px 0px 0px 0px;
 
       .avatar {
-
         .avatar{
           width: 50px;
           height: 50px;
@@ -606,10 +691,8 @@
             width: 50px;
             height: 50px;
           }
-
         }
       }
-
 
       .input-content-first {
         margin-left: 0px;
@@ -633,7 +716,6 @@
       }
 
       .dob-sex-container {
-
         margin-left: 0px;
 
         .dob-container {
@@ -645,11 +727,9 @@
             height: 15px;
             font-size: 11px;
           }
-
         }
 
         .sex-container {
-
           margin-right: 10px;
 
           input[type=checkbox] {
@@ -664,10 +744,8 @@
             margin-left: 5px;
             font-size: 11px;
           }
-
         }
       }
-
     }
 
     &-footer {
@@ -684,19 +762,12 @@
         height: 30px;
         width: fit-content;
         font-size: 11px;
-
       }
-
     }
 
     .errors {
       margin-left: 6px;
       font-size: 8px;
     }
-
   }
 }
-
-
-
-

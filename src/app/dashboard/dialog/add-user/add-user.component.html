@@ -6,21 +6,16 @@
   <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
     <div class="dialog-header">
       <div class="update" *ngIf="user">
-        <button type="button" (click)="onDelete(user.id, user.email)">DELETE</button>
-
-        <div class="title">{{getTitleDialog()}}</div>
-
-        <button type="button" class="edit-button">
-          <i class="material-icons">create</i>
+        <button type="button" (click)="onDelete(user.UserId, user.UserEmail)">DELETE</button>
+        <div class="title">USER INFORMATION</div>
+        <button id="edit" type="button" class="edit-button" (click)="onClickEdit()">
+          <i class="material-icons" [ngClass]="isReadOnly ? 'on' : 'off'">create</i>
         </button>
       </div>
 
       <div class="add" *ngIf="!user">
-
-        <div class="title">{{getTitleDialog()}}</div>
-
+        <div class="title">CREATE NEW USER</div>
       </div>
-
     </div>
 
     <div class="dialog-content">
@@ -36,42 +31,45 @@
             formControlName="image"
             type="file"
             (change)="selectImage($event)"
-            name="image"
-            />
-
+            name="image"/>
         </div>
 
         <div *ngIf="user" class="avatar">
           <label for="image">
-            <img *ngIf="!image" [src]="user.image">
+            <img *ngIf="!image" [src]="user.UserImage">
             <img *ngIf="image" [src]="imageUrl">
           </label>
           <input
             style="display: none;"
             id="image"
             type="file"
+            [readonly]="isReadOnly"
             (change)="selectImage($event)"
-            name="image"
-            />
-
+            name="image"/>
         </div>
-
-
       </div>
 
       <div>
-
         <input
           class="input-content-first"
           type="text"
           id="firstName"
+          [readonly]="isReadOnly"
           placeholder="First Name"
           formControlName="firstName"
+          (input)="checkFirstName()"
           [ngClass]="{'input-error': addForm.get('firstName').touched && !addForm.get('firstName').valid
           || (!addForm.get('firstName').touched && isFirstNameError)}"/>
 
-          <div *ngIf="!isFirstNameError" style="height: 16px;" class="errors">{{showFirstNameErrors()}}</div>
-          <div *ngIf="isFirstNameError" style="height: 16px;" class="errors">{{firstNameError}}</div>
+          <div *ngIf="!(addForm.get('firstName').touched && this.addForm.get('firstName').hasError('required') || isFirstNameError)
+              && !(!isFirstNameError && addForm.get('firstName').touched && this.addForm.get('firstName').hasError('maxlength'))"
+            style="height: 16px;" class="errors"></div>
+
+          <div *ngIf="addForm.get('firstName').touched && this.addForm.get('firstName').hasError('required') || isFirstNameError"
+            style="height: 16px;" class="errors">Please enter user first name</div>
+
+          <div *ngIf="!isFirstNameError && addForm.get('firstName').touched && this.addForm.get('firstName').hasError('maxlength')"
+            style="height: 16px;" class="errors">The input line is too long</div>
       </div>
 
       <div>
@@ -79,12 +77,22 @@
           class="input-content"
           type="text"
           id="lastName"
+          [readonly]="isReadOnly"
           placeholder="Last Name"
           formControlName="lastName"
+          (input)="checkLastName()"
           [ngClass]="{'input-error': addForm.get('lastName').touched && !addForm.get('lastName').valid
           || (!addForm.get('lastName').touched && isLastNameError) }"/>
-          <div *ngIf="!isLastNameError" style="height: 16px;" class="errors">{{showLastNameErrors()}}</div>
-          <div *ngIf="isLastNameError" style="height: 16px;" class="errors">{{lastNameError}}</div>
+
+          <div *ngIf="!(addForm.get('lastName').touched && this.addForm.get('lastName').hasError('required') || isLastNameError)
+          && !(!isLastNameError && addForm.get('lastName').touched && this.addForm.get('lastName').hasError('maxlength'))"
+        style="height: 16px;" class="errors"></div>
+
+          <div *ngIf="addForm.get('lastName').touched && this.addForm.get('lastName').hasError('required') || isLastNameError"
+            style="height: 16px;" class="errors">Please enter user last name</div>
+
+          <div *ngIf="!isLastNameError && addForm.get('lastName').touched && this.addForm.get('lastName').hasError('maxlength')"
+            style="height: 16px;" class="errors">The input line is too long</div>
       </div>
 
       <div class="dob-sex-container">
@@ -93,14 +101,15 @@
             class="input-date-content"
             type="text"
             id="dob"
+            [readonly]="isReadOnly"
             placeholder="Date of birth (optional)"
-            onfocus="(this.type='date', this.placeholder='MM-dd-yyyy')"
+            (click)="onFocusDate()"
             [min]="minDate"
             [max]="maxDate"
             formControlName="date"
             [ngClass]="{'input-error': !isDateValid}"/>
-
-          <div style="height: 16px;" class="errors">{{showDateErrors()}}</div>
+          <div *ngIf="!(addForm.get('date').touched && !isDateValid)" style="height: 16px;" class="errors"></div>
+          <div *ngIf="addForm.get('date').touched && !isDateValid" style="height: 16px;" class="errors">Wrong date format</div>
         </div>
 
         <div class="sex-container">
@@ -109,6 +118,7 @@
             type="checkbox"
             id="Male"
             value="Male"
+            [readonly]="isReadOnly"
             [checked]="male.value === selectedGender"
             (change)="onGenderChange($event)">
           <span>Male</span>
@@ -118,10 +128,10 @@
             type="checkbox"
             id="Female"
             value="Female"
+            [readonly]="isReadOnly"
             [checked]="female.value === selectedGender"
             (change)="onGenderChange($event)" checked>
           <span>Female</span>
-
         </div>
       </div>
 
@@ -133,23 +143,20 @@
           value="ROSEN"
           formControlName="company"
           readonly/>
-
       </div>
 
       <div style="margin-top: 30px;" *ngIf=" (titles$ | async) as titlesData">
         <select
           class="title-dropdown-list"
           id="title"
+          [disabled]="isReadOnly"
           [ngClass]="{'input-error': isTitleError}">
           <option value="-1" disabled selected hidden>Title</option>
           <option
             *ngFor="let title of titlesData"
-            value="{{title.id}}"
-
-
-            >{{title.name}}</option>
+            value="{{title.TitleId}}"
+            >{{title.TitleName}}</option>
         </select>
-
         <div style="height: 18px;" *ngIf="isTitleError" class="errors">Please choose a title</div>
       </div>
 
@@ -163,23 +170,36 @@
           [ngClass]="{
             'input-error': (addForm.get('email').touched && !addForm.get('email').valid) && !addForm.get('email').hasError('uniqueEmail')
             || !isUniqueEmail || isEmailRequired}"/>
-          <div *ngIf="addForm.get('email').touched" style="height: 16px;" class="errors">{{showEmailErrors()}}</div>
-          <div *ngIf="!isUniqueEmail && !isEmailRequired && !addForm.get('email').touched" style="height: 16px;" class="errors">{{showEmailErrors()}}</div>
-          <div *ngIf="isUniqueEmail && isEmailRequired && !addForm.get('email').touched" style="height: 16px;" class="errors">{{emailRequiredError}}</div>
-      </div>
+
+          <div *ngIf="!(this.addForm.get('email').touched && this.addForm.get('email').hasError('uniqueEmail')) &&
+          !(this.addForm.get('email').touched && this.addForm.get('email').hasError('required') && !isEmailRequired) &&
+          !(this.addForm.get('email').hasError('required') && isEmailRequired) &&
+          !(this.addForm.get('email').touched && this.addForm.get('email').hasError('email')) " style="height: 16px;" class="errors">
+          </div>
+
+          <div *ngIf="this.addForm.get('email').touched && this.addForm.get('email').hasError('uniqueEmail')" style="height: 16px;" class="errors">
+            Email existed in system
+          </div>
+
+          <div *ngIf="this.addForm.get('email').touched && this.addForm.get('email').hasError('required') && !isEmailRequired" style="height: 16px;" class="errors">
+            Please enter user email
+          </div>
+
+          <div *ngIf="this.addForm.get('email').hasError('required') && isEmailRequired" style="height: 16px;" class="errors">
+            Please enter user email
+          </div>
+
+          <div *ngIf="this.addForm.get('email').touched && this.addForm.get('email').hasError('email')" style="height: 16px;" class="errors">
+            Wrong email format
+          </div>
+        </div>
 
       <div class="dialog-footer">
           <button class="discard-button" type="button" (click)="onCloseDialog()">DISCARD</button>
 
-          <button type="submit" class="btn btn-primary">{{getAddUpdateButtonName()}}</button>
-
+          <button *ngIf="user" type="submit" class="btn btn-primary">SAVE</button>
+          <button *ngIf="!user" type="submit" class="btn btn-primary">CREATE USER</button>
       </div>
-
-
-
-
     </div>
   </form>
 </div>
-
-<script>$('#date').datepicker({ dateFormat: 'dd-mm-yy' }).val();</script>

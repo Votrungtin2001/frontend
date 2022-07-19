@@ -1,43 +1,37 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { BASE_URL } from '../constants/variables';
+import { BASE_URL, INTERNAPP_URL } from '../constants/variables';
 import { Title } from '../model/title.model';
 import { catchError, map, tap } from 'rxjs/operators';
+import { ErrorService } from './error.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TitleService {
 
-  private titlesUrl = `${BASE_URL}/titles`
+  private titlesUrl = `${INTERNAPP_URL}/title`
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private errorService: ErrorService) { }
 
-   /**
- * Handle Http operation that failed.
- * Let the app continue.
- *
- * @param operation - name of the operation that failed
- * @param result - optional value to return as the observable result
- */
-    private handleError<T>(operation = 'operation', result?: T) {
-      return (error: any): Observable<T> => {
-
-        // TODO: send the error to remote logging infrastructure
-        console.error(error); // log to console instead
-
-        // TODO: better job of transforming error for user consumption
-
-        // Let the app keep running by returning an empty result.
-        return of(result as T);
-      };
+  //Default methods
+  //Create model based on data
+  createTitleModel(title: Title): Title {
+    const titleModel: Title = {
+      TitleId: title.TitleId,
+      TitleName: title.TitleName
     }
+    return titleModel;
+  }
 
+  //Get a list of title
   getTitles(): Observable<Title[]> {
-    return this.http.get<Title[]>(this.titlesUrl).pipe(
+    return this.http.get<any>(this.titlesUrl).pipe(
       tap(_ => console.log('fetched titles')),
-      catchError(this.handleError<Title[]>('getTitles', []))
+      catchError(this.errorService.handleError<Title[]>('getTitles', []))
     )
   }
 }

@@ -9,5 +9,9 @@ export const getInitialUsers = createSelector(getUsersState, (state) => {
   return state.users;
 })
 
+export const getUsersByTitle = createSelector(getUsersState, (state) => {
+  return state.usersGroupByTitle;
+})
+
 
 

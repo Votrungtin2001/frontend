@@ -9,8 +9,9 @@ import { AddUserComponent } from '../dialog/add-user/add-user.component';
   styleUrls: ['./user-card.component.scss']
 })
 export class UserCardComponent implements OnInit {
-
+  //INPUT
   @Input() user: User;
+
   constructor(
     private dialog: MatDialog,
   ) { }
@@ -18,11 +19,11 @@ export class UserCardComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //OPEN UPDATE DIALOG
   onOpenUpdateEmployeeDialog() {
     this.dialog.open(AddUserComponent, {
       autoFocus: false,
       data: {user: this.user},
     });
   }
-
 }

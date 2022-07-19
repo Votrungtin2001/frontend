@@ -3,7 +3,7 @@ import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, In
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Observable } from 'rxjs';
 import { Title } from 'src/app/model/title.model';
 import { User } from 'src/app/model/user.model';
 import { UserService } from 'src/app/services/user.service';
@@ -19,36 +19,44 @@ import { DeleteUserComponent } from '../delete-user/delete-user.component';
   styleUrls: ['./add-user.component.scss']
 })
 export class AddUserComponent implements OnInit, AfterContentChecked, AfterViewChecked{
-
-
-  addForm: FormGroup;
+  //DATA
+  //Title - DATA
   titles$: Observable<Title[]>;
 
+  //User - DATA
   user?: User
 
+  //FORM GROUP
+  addForm: FormGroup;
+  isReadOnly = true;
+
+  //IMAGE
   image: File = null;
   imageUrl: string;
+
+  //CHECK ERROR
+  //First Name Error
+  isFirstNameError = false;
+  //Last Name Error
+  isLastNameError = false;
+  //Date Error
+  isDateValid = true;
   maxDate: any;
   minDate: any;
   sMinDate: string;
   sMaxDate: string;
-
-  isFirstNameError = false;
-  firstNameError = "";
-  isLastNameError = false;
-  lastNameError = "";
-  isDateValid = true;
-  isUniqueEmail = true;
-  isTitleError = false;
-  isEmailRequired = false;
-  emailRequiredError = "";
-
   selectedDate = "";
+
+  //Gender
   selectedGender = "Female";
 
-  selectedTitleId = 0;
+  //Email
+  isUniqueEmail = true;
+  isEmailRequired = false;
 
-  dateFormat = 'yyyy-MM-dd';
+  //Title
+  isTitleError = false;
+  selectedTitleId = 0;
 
   constructor(
     public dialogRef: MatDialogRef<AddUserComponent>,
@@ -61,10 +69,24 @@ export class AddUserComponent implements OnInit, AfterContentChecked, AfterViewC
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
+  ngOnInit(): void {
+    this.titles$ = this.store.select(getInitialTitles);
+    this.user = this.data.user;
+    if(this.user) {
+      this.setUpViewWithUserData(this.user);
+    }
+    else {
+      this.setUpViewWithoutUserData();
+    }
+    this.maxDate = new Date().toISOString().slice(0, 10);
+    this.minDate = new Date(1900, 1, 1).toISOString().slice(0, 10);
+    this.sMaxDate = this.datePipe.transform(this.maxDate, "yyyy-MM-dd");
+    this.sMinDate = this.datePipe.transform(this.minDate, "yyyy-MM-dd");
+  }
 
   ngAfterViewChecked(): void {
     if(this.user) {
-      this.updateTitleId(this.user.titleId);
+      this.updateTitleId(this.user.UserTitleId);
     }
   }
 
@@ -74,156 +96,141 @@ export class AddUserComponent implements OnInit, AfterContentChecked, AfterViewC
       this.isDateValid = checkDate;
       this.cdRef.detectChanges();
     }
-    this.checkFirstName();
-    this.checkLastName();
-    this.checkEmailRequired();
   }
 
-  ngOnInit(): void {
-    this.titles$ = this.store.select(getInitialTitles);
-    this.user = this.data.user;
-    this.dateFormat = 'MM-dd-yyyy';
-    if(this.user) {
-      const emailInput = document.getElementById("email") as HTMLInputElement;
-      emailInput.readOnly = true;
-      const user_date = this.datePipe.transform(this.user.dob, this.dateFormat);
-      this.updateCheckGender(this.user.gender);
+  //DEFAULT
+  //With user
+  setUpViewWithUserData(User: User) {
+    const emailInput = document.getElementById("email") as HTMLInputElement;
+    emailInput.readOnly = true;
+    const user = this.userService.createUserModel(User, 'MM-dd-yyyy');
+    this.updateCheckGender(user.UserGender);
 
-      this.addForm = new FormGroup({
-        image: new FormControl(
-          this.user.image,
-        ),
-        firstName: new FormControl(
-          this.user.firstName,
-          [Validators.required, Validators.maxLength(80)],
-        ),
-        lastName: new FormControl(
-          this.user.lastName,
-          [Validators.required, Validators.maxLength(80)],
-        ),
-        date: new FormControl(
-          user_date,
-        ),
-        gender: new FormControl(
-          "Female",
-        ),
-        company: new FormControl(
-          "ROSEN",
-        ),
-        email: new FormControl(
-          this.user.email,
-          Validators.compose([Validators.required, Validators.email]),
-        ),
-      })
+    this.addForm = new FormGroup({
+      image: new FormControl(
+        user.UserImage,
+      ),
+      firstName: new FormControl(
+        user.UserFirstName,
+        [Validators.required, Validators.maxLength(80)],
+      ),
+      lastName: new FormControl(
+        user.UserLastName,
+        [Validators.required, Validators.maxLength(80)],
+      ),
+      date: new FormControl(
+        user.UserDob,
+      ),
+      gender: new FormControl(
+        user.UserGender,
+      ),
+      company: new FormControl(
+        user.UserCompany,
+      ),
+      email: new FormControl(
+        user.UserEmail,
+        Validators.compose([Validators.required, Validators.email]),
+      ),
+    })
+  }
+
+   //Without user
+   setUpViewWithoutUserData() {
+    this.isReadOnly = false;
+    this.addForm = new FormGroup({
+      image: new FormControl(
+        "",
+      ),
+      firstName: new FormControl(
+        null,
+        [Validators.required, Validators.maxLength(80)],
+      ),
+      lastName: new FormControl(
+        null,
+        [Validators.required, Validators.maxLength(80)],
+      ),
+      date: new FormControl(
+        null,
+      ),
+      gender: new FormControl(
+        "Female",
+      ),
+      company: new FormControl(
+        "ROSEN",
+      ),
+      email: new FormControl(
+        null,
+        Validators.compose([Validators.required, Validators.email]),
+        this.emailValidator.validate.bind(this),
+      ),
+    })
+  }
+
+  //Turn on/off Edit function
+  onClickEdit() {
+    this.isReadOnly = !this.isReadOnly;
+    const editButton = document.getElementById("edit") as HTMLButtonElement;
+    if(this.isReadOnly) {
+      editButton.style.color = "#bebebe"
     }
-    else {
-      this.addForm = new FormGroup({
-        image: new FormControl(
-          "",
-        ),
-        firstName: new FormControl(
-          null,
-          [Validators.required, Validators.maxLength(80)],
-        ),
-        lastName: new FormControl(
-          null,
-          [Validators.required, Validators.maxLength(80)],
-        ),
-        date: new FormControl(
-          null,
-        ),
-        gender: new FormControl(
-          "Female",
-        ),
-        company: new FormControl(
-          "ROSEN",
-        ),
-        email: new FormControl(
-          null,
-          Validators.compose([Validators.required, Validators.email]),
-          this.emailValidator.validate.bind(this),
-        ),
-
-      })
-    }
-
-
-    this.dateFormat = 'yyyy-MM-dd';
-    this.maxDate = new Date().toISOString().slice(0, 10);
-    this.minDate = new Date(1900, 1, 1).toISOString().slice(0, 10);
-    this.sMaxDate = this.datePipe.transform(this.maxDate, this.dateFormat);
-    this.sMinDate = this.datePipe.transform(this.minDate, this.dateFormat);
-
+    else editButton.style.color = "#3D3D3D"
   }
 
-
-  getTitleDialog() {
-    if(this.user) return "USER INFORMATION";
-    else return "CREATE NEW USER";
-  }
-
+  //IMAGE
+  //Upload image on input
   selectImage(event:any) {
-    if (event.target.files.length > 0) {
-      this.image = event.target.files[0];
-      var reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0]);
-      reader.onload=(event:any) => {
-        this.imageUrl=event.target.result;
+    if(!this.isReadOnly) {
+      if (event.target.files.length > 0) {
+        this.image = event.target.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onload=(event:any) => {
+          this.imageUrl=event.target.result;
+        }
       }
     }
-
   }
 
-  showFirstNameErrors() {
-    const firstNameForm = this.addForm.get('firstName');
-    if(firstNameForm.touched && !firstNameForm.valid) {
-      if(firstNameForm.errors.required) {
-        return 'Please enter user first name';
+  //Detect changes in input fields
+  checkChanges() {
+    const dateForm = this.addForm.get('date');
+    dateForm.valueChanges.pipe(
+      debounceTime(400),
+      distinctUntilChanged())
+      .subscribe((value) => {
+        const selectedDate = dateForm.value;
+        if(selectedDate != null) {
+          var vSelectedDate = Date.parse(selectedDate);
+          var vMinDate = Date.parse(this.sMinDate);
+          var vMaxDate = Date.parse(this.sMaxDate);
+          if(vSelectedDate < vMinDate || vSelectedDate > vMaxDate) {
+            this.isDateValid = false;
+          }
+          else {
+            this.isDateValid = false;
+          }
+        }
       }
-      if(firstNameForm.errors.maxlength) {
-        return 'The input line is too long';
-      }
-    }
-    return "";
+    );
   }
 
+  //FIRST NAME
   checkFirstName() {
     if(this.addForm.get('firstName').touched && this.addForm.get('firstName').hasError('required')) {
       this.isFirstNameError = true;
     }
     if(this.addForm.get('firstName').valid) this.isFirstNameError = false;
-
-    if(this.isFirstNameError) this.firstNameError = "Please enter user first name";
-    else {
-      this.firstNameError = "";
-    }
   }
 
-  showLastNameErrors() {
-    const lastNameForm = this.addForm.get('lastName');
-    if(lastNameForm.touched && !lastNameForm.valid) {
-      if(lastNameForm.errors.required) {
-        return 'Please enter user last name';
-      }
-      if(lastNameForm.errors.maxlength) {
-        return 'The input line is too long';
-      }
-    }
-    return "";
-  }
-
+  //LAST NAME
   checkLastName() {
     if(this.addForm.get('lastName').touched && this.addForm.get('lastName').hasError('required')) {
       this.isLastNameError = true;
     }
     if(this.addForm.get('lastName').valid) this.isLastNameError = false;
-
-    if(this.isLastNameError) this.lastNameError = "Please enter user last name";
-    else {
-      this.lastNameError = "";
-    }
   }
 
+  //DATE
   showDateErrors() {
     const dateForm = this.addForm.get('date');
     if(dateForm.touched) {
@@ -243,6 +250,16 @@ export class AddUserComponent implements OnInit, AfterContentChecked, AfterViewC
     return "";
   }
 
+  //Change input type text -> date
+  onFocusDate() {
+    if(!this.isReadOnly) {
+      const dateInput = document.getElementById("dob") as HTMLInputElement;
+      dateInput.type = 'date';
+      dateInput.placeholder = 'MM-dd-yyyy'
+    }
+  }
+
+  //Check valid date
   checkValidDate() {
     const dateForm = this.addForm.get('date');
     if(dateForm.touched) {
@@ -264,12 +281,15 @@ export class AddUserComponent implements OnInit, AfterContentChecked, AfterViewC
     return true;
   }
 
+  //GENDER
+  //Change event
   onGenderChange(event:any) {
     const selectedGenderValue = event.target.value;
     this.selectedGender = selectedGenderValue;
     return this.selectedGender;
   }
 
+  //Update selected gender
   checkGender() {
     const checkMale = document.getElementById("Male") as HTMLInputElement;
     const checkFemale = document.getElementById("Female") as HTMLInputElement;
@@ -280,9 +300,9 @@ export class AddUserComponent implements OnInit, AfterContentChecked, AfterViewC
       checkFemale.checked = true
       this.selectedGender = "Female";
     }
-
   }
 
+  //Make gender combobox to ratio
   updateCheckGender(gender: string) {
     const checkMale = document.getElementById("Male") as HTMLInputElement;
     const checkFemale = document.getElementById("Female") as HTMLInputElement;
@@ -296,51 +316,28 @@ export class AddUserComponent implements OnInit, AfterContentChecked, AfterViewC
       checkMale.checked = false;
       checkFemale.checked = true;
     }
-
   }
 
-
-  showEmailErrors() {
-    if(this.isUniqueEmail == true) {
-      const emailForm = this.addForm.get('email');
-      if(emailForm.touched && !emailForm.valid) {
-        if(emailForm.hasError('uniqueEmail')) {
-          return "";
-        }
-        else {
-          if(emailForm.hasError('required')) {
-            return 'Please enter user email';
-          }
-          if(emailForm.hasError('email')){
-            return 'Wrong email format';
-          }
-        }
-      }
-      return "";
+  //EMAIL
+  checkEmail() {
+    if(this.addForm.get('email').valid) {
+      this.isEmailRequired = false;
+      this.isUniqueEmail = true;
     }
     else {
-      return "Email existed in system";
-    }
-  }
-
-  checkEmailRequired() {
-    if(this.addForm.get('email').touched && this.addForm.get('email').hasError('required')) {
       this.isEmailRequired = true;
-    }
-
-    if(this.addForm.get('email').valid) this.isEmailRequired = false;
-
-    if(this.isEmailRequired) this.emailRequiredError = "Please enter user email";
-    else {
-      this.emailRequiredError = "";
+      this.isUniqueEmail = false;
     }
   }
 
+
+  //TITLE OPTION
   getTitleId() {
     var e = document.getElementById('title') as HTMLSelectElement | null;
     this.selectedTitleId = parseInt(e.options[e.selectedIndex].value);
   }
 
+  //UPDATE DEFAULT TITLE OPTION (user)
   updateTitleId(titleId: number) {
     var e = document.getElementById('title') as HTMLSelectElement | null;
     for(var i, j = 0; i = e.options[j]; j++) {
@@ -350,11 +347,6 @@ export class AddUserComponent implements OnInit, AfterContentChecked, AfterViewC
           break;
       }
     }
-  }
-
-  getAddUpdateButtonName() {
-    if(this.user) return "SAVE";
-    else return "CREATE USER";
   }
 
   onCloseDialog() {
@@ -372,20 +364,21 @@ export class AddUserComponent implements OnInit, AfterContentChecked, AfterViewC
     var userCreatedDate = new Date().getTime();
 
     const newUser: User = {
-      id: 0,
-      firstName: userFirstName,
-      lastName: userLastName,
-      dob: this.selectedDate,
-      gender: userGender,
-      company: userCompany,
-      titleId: userTitleId,
-      email: userEmail,
-      image: "",
-      createdDate: userCreatedDate,
+      UserId: 0,
+      UserFirstName: userFirstName,
+      UserLastName: userLastName,
+      UserDob: this.selectedDate,
+      UserGender: userGender,
+      UserCompany: userCompany,
+      UserTitleId: userTitleId,
+      UserEmail: userEmail,
+      UserImage: "",
+      UserCreatedDate: userCreatedDate,
     }
     this.userService.addUser(this.image, newUser).subscribe((result) => {
-      if(result.id > 0) {
-        this.store.dispatch(addUser({user: result}));
+      if(result.UserId > 0) {
+        const userModel = this.userService.createUserModel(result, 'MM-dd-yyyy');
+        this.store.dispatch(addUser({user: userModel}));
         this.dialogRef.close();
       }
     });
@@ -394,55 +387,47 @@ export class AddUserComponent implements OnInit, AfterContentChecked, AfterViewC
   updateUser() {
     var userFirstName = this.addForm.get('firstName').value;
     var userLastName = this.addForm.get('lastName').value;
-    if(this.selectedDate == "") this.selectedDate = this.user.dob;
+    if(this.selectedDate == "") this.selectedDate = this.user.UserDob;
     var userGender = this.selectedGender;
     var userCompany = "ROSEN";
     var userTitleId = this.selectedTitleId;
     var userEmail = this.addForm.get('email').value;
 
     const newUser: User = {
-      id: this.user.id,
-      firstName: userFirstName,
-      lastName: userLastName,
-      dob: this.selectedDate,
-      gender: userGender,
-      company: userCompany,
-      titleId: userTitleId,
-      email: userEmail,
-      image: this.user.image,
-      createdDate: this.user.createdDate,
+      UserId: this.user.UserId,
+      UserFirstName: userFirstName,
+      UserLastName: userLastName,
+      UserDob: this.selectedDate,
+      UserGender: userGender,
+      UserCompany: userCompany,
+      UserTitleId: userTitleId,
+      UserEmail: userEmail,
+      UserImage: this.user. UserImage,
+      UserCreatedDate: this.user.UserCreatedDate,
     }
 
-    console.log(newUser);
     this.userService.updateUser(this.image, newUser).subscribe((result) => {
-      if(result.id > 0) {
+      if(result.UserId > 0) {
         this.store.dispatch(updateUser({user: result}));
         this.dialogRef.close();
       }
     });
   }
 
-
-
-  onSubmit() {
+  //CHECK FORM
+  checkForm() {
+    this.checkFirstName();
+    this.checkLastName();
     this.checkGender();
+    this.checkEmail();
+  }
+
+  //SUBMIT FORM
+  onSubmit() {
+    this.checkForm();
     this.getTitleId();
 
-    if(this.addForm.get('firstName').hasError('required')) {
-      this.isFirstNameError = true;
-    }
-    else this.isFirstNameError = false;
-
-    if(this.addForm.get('lastName').hasError('required')) {
-      this.isLastNameError = true;
-    }
-    else this.isLastNameError = false;
-
-    if(this.addForm.get('email').hasError('required')) {
-      this.isEmailRequired = true;
-    }
-    else this.isEmailRequired = false;
-
+    //ADD USER
     if(!this.user) {
       if(this.addForm.get('email').hasError('uniqueEmail')) {
         this.isUniqueEmail = false;
@@ -458,10 +443,10 @@ export class AddUserComponent implements OnInit, AfterContentChecked, AfterViewC
             this.addUser();
           }
         }
-
       }
     }
 
+    //UPDATE USER
     else {
       this.isUniqueEmail = true;
       if(this.selectedTitleId <= 0) {

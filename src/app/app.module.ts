@@ -13,6 +13,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { UniqueEmailValidatorDirective } from './shared/unique-email-validator.directive';
+import { TestDirective } from './shared/test.directive';
 
 
 const Ux_Modules = [
@@ -24,6 +25,7 @@ const Ux_Modules = [
   declarations: [
     AppComponent,
     UniqueEmailValidatorDirective,
+    TestDirective,
   ],
   imports: [
     BrowserModule,

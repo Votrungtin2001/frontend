@@ -1,26 +1,17 @@
 <div class="users-list-container" *ngIf="titles$ | async as titlesData">
-  <ng-container *ngFor="let title of titlesData">
+  <ng-container *ngFor="let title of titlesData; let i = index">
     <div class="title">
-      <button (click)="onClickExpand(title.id)">
-        <i class="material-icons">{{ getCollapseOrExpandIcon(title.id) }}</i>
+      <button (click)="onClickExpand(title.TitleId)">
+        <i *ngIf="expands[i].isExpand" class="material-icons">keyboard_arrow_down</i>
+        <i *ngIf="!(expands[i].isExpand)" class="material-icons">keyboard_arrow_right</i>
       </button>
-
-      <span class="title-name">{{ title.name }}</span>
-
-      <hr />
+      <span class="title-name" (click)="onClickExpand(title.TitleId)">{{ title.TitleName }}</span>
+      <hr (click)="onClickExpand(title.TitleId)"/>
     </div>
 
     <div *ngIf="users$ | async as usersData">
-      <div
-        *ngIf="
-          isCollapseOrExpand(title.id) &&
-          getUsersByTitleId(title.id, usersData).length > 0
-        "
-        class="users-list"
-      >
-        <ng-container
-          *ngFor="let user of getUsersByTitleId(title.id, usersData)"
-        >
+      <div *ngIf="expands[i].isExpand && usersByTitleId[i].length > 0" class="users-list">
+        <ng-container *ngFor="let user of usersByTitleId[i]">
           <app-user-card [user]="user"></app-user-card>
         </ng-container>
       </div>

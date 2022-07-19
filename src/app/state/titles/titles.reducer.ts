@@ -1,10 +1,11 @@
 import { createReducer, on } from "@ngrx/store"
-import { getInitialTitles } from "./titles.action";
+import { Title } from "src/app/model/title.model";
+import { getInitialTitlesAction } from "./titles.action";
 import { initialState } from "./titles.state";
 
 const _titlesReducer = createReducer(
   initialState,
-  on(getInitialTitles, (state, action) => {
+  on(getInitialTitlesAction, (state, action) => {
     let titles = action.titles;
     return {
       ...state,

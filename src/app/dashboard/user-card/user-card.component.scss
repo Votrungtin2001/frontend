@@ -1,5 +1,3 @@
-
-
 .user-card {
   background-color: #fff;
   width: 445px;
@@ -12,8 +10,6 @@
     object-fit: cover;
   }
 }
-
-
 
 .user-details {
   margin: 10px 10px;
@@ -31,84 +27,111 @@
 }
 
 // desktop styles
-@media screen and (min-width: 745px) and (max-width: 1280px){
+@media screen and (max-width: 1280px){
   .user-card {
     width: 385px;
-    height: 108px;
 
     img {
-      width: 108px;
-      height: 108px;
+      width: 100px;
+      height: 110px;
     }
   }
 
-
   .user-details {
     margin: 10px 10px;
-    font: normal normal normal 12px/18px Roboto;
+    font: normal normal normal 13px/20px Roboto;
 
     .active {
-      font: normal normal normal 12px/18px Roboto;
+      font: normal normal normal 13px/20px Roboto;
     }
-
-
   }
 }
 
 // tablet styles
-@media screen and (min-width: 361px) and (max-width: 744px){
+@media screen and (max-width: 744px){
   .user-card {
-    width: 340px;
-    height: 100px;
+    width: 300px;
+    height: 120px;
 
     img {
       width: 100px;
-      height: 100px;
+      height: 120px;
     }
   }
 
   .user-details {
     margin: 10px 10px;
-    font-size: 11px;
+    font: normal normal normal 13px/18px Roboto;
 
     .active {
-      font-size: 11px;
+      font: normal normal normal 13px/18px Roboto;
     }
+  }
+}
 
-    div {
-      height: 15px;
+@media screen and (max-width: 600px){
+  .user-card {
+    width: 230px;
+    height: 90px;
+
+    img {
+      width: 90px;
+      height: 90px;
     }
+  }
 
+  .user-details {
+     margin: 5px;
+     margin-bottom: 6px;
+     font: normal normal normal 10px/14px Roboto;
 
+    .active {
+      font: normal normal normal 10px/14px Roboto;
+    }
+  }
+}
 
+@media screen and (max-width: 500px){
+  .user-card {
+    width: 170px;
+    height: 60px;
+
+    img {
+      width: 60px;
+      height: 60px;
+    }
+  }
+
+  .user-details {
+     margin: 3px;
+     margin-bottom: 3px;
+     font: normal normal normal 8px/10px Roboto;
+
+    .active {
+      font: normal normal normal 8px/10px Roboto;
+    }
   }
 }
 
 // mobile styles
 @media screen and (max-width: 360px){
- .user-card {
-    width: 155px;
-    height: 45px;
+  .user-card {
+    width: 160px;
+    height: 60px;
 
     img {
-      width: 45px;
-      height: 45px;
+      width: 60px;
+      height: 60px;
     }
   }
 
   .user-details {
-    margin: 0px 5px;
-    margin-bottom: 6px;
-    font-size: 5px;
-
-    div {
-      display: flex;
-      height: 7px;
-    }
+     margin: 3px;
+     margin-bottom: 3px;
+     font: normal normal normal 7px/10px Roboto;
 
     .active {
-      font-size: 6px;
+      font: normal normal normal 7px/10px Roboto;
     }
   }
 }
-

@@ -1,7 +1,9 @@
 <div class="dialog-container">
   <div class="announcement">
-    Are you sure you want to DELETE user_email? <br>
-    Please input the user email as confirmation.
+    <span>Are you sure you want to DELETE </span>
+    <span style="color: #f50025; font-weight:bold;">{{userEmail}}</span>
+    <br>
+    <span>Please input the user email as confirmation.</span>
   </div>
 
   <div>
@@ -10,18 +12,24 @@
       id="confirmEmail"
       type="text"
       placeholder="Email"
-      [ngClass]="{'input-error': isEmailRequired || isMatchEmail || isWrongEmailFormat}"/>
+      [formControl]="emailControl"
+      [ngClass]="{'input-error':isEmailRequired || isMatchEmail || isWrongEmailFormat}"/>
 
-    <div style="height: 16px;" class="errors">{{showEmailErrors()}}</div>
+    <div *ngIf="!isEmailRequired && !isMatchEmail && !isWrongEmailFormat" style="height: 16px;" class="errors"></div>
+    <div *ngIf="isEmailRequired" style="height: 16px;" class="errors">Please enter user email</div>
+    <div *ngIf="isMatchEmail" style="height: 16px;" class="errors">Email input not match email user</div>
+    <div *ngIf="isWrongEmailFormat" style="height: 16px;" class="errors">Wrong email format</div>
   </div>
 
-
-
   <div class="dialog-footer">
-    <button class="cancel-button" type="button" (click)="onCloseDialog()" >CANCEL</button>
+    <button class="cancel-button" type="button" (click)="onCloseDialog()">CANCEL</button>
 
-    <button class="delete-button" type="submit" (click)="onDelete()" >DELETE</button>
-
-</div>
-
+    <button
+      class="delete-button"
+      type="button"
+      [disabled]="!isValid"
+      (click)="onDelete()"
+      [ngClass]="{'enable':isValid, 'unable': !isValid}"
+      >DELETE</button>
+  </div>
 </div>

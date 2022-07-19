@@ -10,13 +10,10 @@
     <div class="dashboard-top-right">
       <div class="dashboard-sort">
         <span class="dashboard-sort-label">Sort by</span>
-
         <select id="sortOption" class="dashboard-sort-select" (change)="selectedSortOption()">
           <option *ngFor="let option of sortOptions" value="{{option.id}}">{{option.name}}</option>
         </select>
-
         <span>
-
           <button type="button" (click)="onClickOrder()">
             <i class="material-icons">{{getOrderIcon()}}</i>
           </button>
@@ -25,7 +22,6 @@
 
       <div class="dashboard-search">
         <div class="vr"></div>
-
         <div class="input-container">
           <i class="material-icons">search</i>
           <input
@@ -33,30 +29,16 @@
             class="input-content"
             type="text"
             placeholder="Search"
-            (input)="changeSearch($event)"/>
-
+            [formControl] = "searchControl"/>
         </div>
-
       </div>
-
     </div>
-
   </div>
 
   <div class="dashboard-content">
     <app-users-list
-      [sortOptionId]="defaultSortOptionId"
-      [isASC]="isASC"
-      [searchQuery]="defaultSearchQuery"
-      [isSearching]="isSearching"
-      (passingEvent)="updateIsSearching($event)"></app-users-list>
+      [usersByTitleId]="usersByTitleId"
+      [expands]="expands">
+    </app-users-list>
   </div>
-
-
-
-
-
-
-
 </div>
-
